@@ -18,13 +18,14 @@ class CategoricalEmbedding(nn.Module):
         )
     
     def forward(self, x):
-        # x: bs 
-        return self.embedding(x) # bs, embed_dim
+                                            # x: bs 
+        return self.embedding(x)            # bs, embed_dim
   
 
 class NumericalEmbedding(nn.Module):  
     """
-    Embedding class of each Numerical feature using NN Linear layer of size (1 x embed_dim) and then Relu non-linearity. 
+    Embedding class of each Numerical feature using NN Linear \
+    layer of size (1 x embed_dim) and then Relu non-linearity. 
     N embeddings will be created for N numerical features
     """
     def __init__(self, embed_dim):
@@ -34,9 +35,9 @@ class NumericalEmbedding(nn.Module):
                             nn.ReLU())
 
     def forward(self, x):
-        # x: bs
-        x = x.unsqueeze(1) # bs,1
-        return self.linear(x)  # bs, embed_dim
+                                            # x: bs
+        x = x.unsqueeze(1)                  # bs,1
+        return self.linear(x)               # bs, embed_dim
     
 class Embedding(nn.Module):
     """
@@ -72,6 +73,6 @@ class Embedding(nn.Module):
         for i, layer in enumerate(self.num_embedding):
             output.append(layer(x[:, self.no_cat+i].unsqueeze(1).float()))
 
-        data = torch.stack(output, dim=1) # bs, n, embed_size
+        data = torch.stack(output, dim=1)        # bs, n, embed_size
         
         return data
