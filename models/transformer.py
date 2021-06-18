@@ -128,7 +128,6 @@ class EncoderLayer(nn.Module):
         self.size = size   # d_model or embed_dim
 
     def forward(self, x):
-        #TODO: Better comment here. "Follow Figure 1 (left) for connections."
         x = self.sublayer[0](x, lambda x: self.self_attn(x, x, x)) # bs, n , 
         
         return self.sublayer[1](x, self.feed_forward) # bs, n , d_model

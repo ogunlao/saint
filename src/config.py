@@ -8,7 +8,7 @@ args = Namespace(
     experiment = 'sup', # {'sup', 'ssl'}
     task = 'classification', # {'classification', 'regression'}
     model = 'saint_i',
-    pretrained_checkpoint = '/home/ola/Projects/saint/checkpoints/lightning_logs/version_0/checkpoints/epoch=0-step=1.ckpt',
+    pretrained_checkpoint = None, #'/home/ola/Projects/saint/checkpoints/lightning_logs/version_0/checkpoints/epoch=0-step=1.ckpt',
     
     # path to csv files for training either ssl or sup
     train_csv_path = '/home/ola/Projects/saint/data/train.csv',

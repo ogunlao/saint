@@ -38,7 +38,8 @@ def setup_experiment(transformer, embedding,
                                         args.freeze_encoder)
     else:
         print('Unknown experiment type. Select either "sup" or "ssl"')
-        
+        exit()
+    
     checkpoint_callback = ModelCheckpoint(monitor='val_loss',
                                           mode='min')
 
