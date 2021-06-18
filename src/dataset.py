@@ -132,3 +132,12 @@ class DatasetTabular(Dataset):
             target = self.y[idx]
             weight[idx] = weight_per_class[target]
         return weight
+    
+def generate_dataset(train_df, train_y, 
+                     val_df, val_y, 
+                     test_df, test_y,):
+    train_dataset = DatasetTabular(train_df, train_y)
+    val_dataset = DatasetTabular(val_df, val_y)
+    test_dataset = DatasetTabular(test_df, test_y)
+
+    return train_dataset, val_dataset, test_dataset

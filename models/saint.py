@@ -28,7 +28,7 @@ class SaintLayer(nn.Module):
     def forward(self, x):
         return self.misa(self.msa(x))
 
-def make_saint_model(num_heads, embed_dim, num_layers, d_ff, dropout):
+def make_saint(num_heads, embed_dim, num_layers, d_ff, dropout):
     """
     make the Saint model by stacking  the Saint layer  into the encoder layer, the encoder layer is then stacked with the embedding layer in the transformer object
     -----------

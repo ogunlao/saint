@@ -1,11 +1,10 @@
 import torch
 import torch.nn as nn
 
-
 from .transformer import PositionwiseFeedForward, MultiHeadedAttention
 from .transformer import EncoderLayer, Encoder
 
-def make_saint_s(embed_dim, d_ff, num_heads, dropout, num_layers):
+def make_saint_s(num_heads, embed_dim, num_layers, d_ff, dropout):
     """
     Make the Saint-t model by stacking  mutlihead attention 
     and feed forward into the encoder layer

@@ -4,7 +4,10 @@ import torch
 
 
 args = Namespace(
+    experiment = 'sup', # {'sup', 'ssl'}
     task = 'classification', # {'classification', 'regression'}
+    model = 'saint_s',
+
     #parameters for the model 
     num_output = 1, # {1 for binary, > 1 for multiclass}
     num_layers = 6,

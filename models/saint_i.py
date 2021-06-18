@@ -49,7 +49,7 @@ class MultiHeadedIntersampleAttention(nn.Module):
         return self.linears[-1](x)  # bs , n , d_model
     
     
-def make_saint_intersample(num_heads, embed_dim, num_layers, d_ff, dropout):
+def make_saint_i(num_heads, embed_dim, num_layers, d_ff, dropout):
     """
     Creates the Saint-i model by stacking  intersample attention  and 
     feed forward into the encoder layer, the encoder layer is then stacked 
