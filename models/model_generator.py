@@ -10,7 +10,7 @@ model_type = dict(saint = make_saint,
                 )
 
 def get_model(model_name, args):
-    model_fn = model_type(model_name)
+    model_fn = model_type[model_name]
     encoder = model_fn(args.num_heads, args.embed_dim, args.num_layers, 
              args.d_ff, args.dropout)
     embedding = Embedding(args.embed_dim, args.no_num, args.cats)

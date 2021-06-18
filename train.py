@@ -4,7 +4,7 @@ from pytorch_lightning import seed_everything
 from pytorch_lightning.callbacks import ModelCheckpoint
 
 from src.trainer import SaintSemiSupLightningModule, SaintSupLightningModule
-from utils import load_pretrained_transformer, load_pretrained_embedding
+from utils.utils import load_pretrained_transformer, load_pretrained_embedding
 from src.config import args
 
 def setup_experiment(transformer, embedding, 

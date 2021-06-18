@@ -1,6 +1,6 @@
 import torch
 import torch.nn as nn
-from utils import clones
+from .utils import clones
 
 class ConstrastiveLoss(nn.Module):
     """Compute the contrastive loss ..."""

@@ -1,3 +1,6 @@
+"""The saint intersample code follows the pseudocode given in the \
+    Saint Paper by Gowthami Somepalli et al. See https://arxiv.org/abs/2106.01342"""
+
 import torch.nn as nn
 
 from .transformer import attention, clones

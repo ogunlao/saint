@@ -1,3 +1,6 @@
+"""The saint transformer code follows the pseudocode give in the \
+    Saint Paper by Gowthami Somepalli et al. See https://arxiv.org/abs/2106.01342"""
+
 import torch.nn as nn
 
 from .transformer import PositionwiseFeedForward, MultiHeadedAttention
@@ -7,7 +10,7 @@ from .saint_i import MultiHeadedIntersampleAttention
 
 class SaintLayer(nn.Module):
     """
-    The saint layer stacks the self attention and the intersample attention together 
+    Saint layer stacks the self attention and the intersample attention together 
     """
     def __init__(self, msa, misa, size):
         """
@@ -30,7 +33,7 @@ class SaintLayer(nn.Module):
 
 def make_saint(num_heads, embed_dim, num_layers, d_ff, dropout):
     """
-    make the Saint model by stacking  the Saint layer  into the encoder layer, the encoder layer is then stacked with the embedding layer in the transformer object
+    Make the Saint model by stacking  the Saint layer  into the encoder layer, the encoder layer is then stacked with the embedding layer in the transformer object
     -----------
     Parameters
     num_heads: (int) number of attention heads 
