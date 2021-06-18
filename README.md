@@ -21,9 +21,11 @@ Major modules implemented in the code
     - Concatenate cat and num columns, with cat columns coming first, then numerical ones
     - Calculate the number of categorical columns \(including 'cls' column\), and numerical columns. Add to config file as 'no_cat' and 'no_num'
     - Calculate the number of categories in each categorical columns, as a list. Add to config file as 'cats'. 'cls' column has 1 category
-    - Sample of script to preprocess file is in `dataset.py` file  in `src` folder
+    - Sample function `preprocess_bank` can be used to preprocess bank dataset. It can be found in `src > dataset.py`
 
 1. Run `python main.py` with command-line arguments or with properly edited config file.
+<br/>
+e.g. `>> python main.py --model saint_i --experiment ssl` to train saint model in self-supervised mode.
 
 
 ### TODO
