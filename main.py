@@ -1,9 +1,8 @@
 import argparse
-from collections import ChainMap 
 
 from src.config import args as default_args
 from models.model_generator import get_model
-from train import setup_experiment
+from src.train import setup_experiment
 from src.dataloader import generate_dataloader
 from utils.utils import parse_arguments, dotdict
 
@@ -22,9 +21,7 @@ def main(args):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    args = parse_arguments(parser)
+    args = parse_arguments(parser, default_args)
+    args = dotdict(args)
     
-    args_col = ChainMap(vars(args), vars(default_args))
-    args_col = dotdict(args_col)
-    
-    main(args_col)
+    main(args)

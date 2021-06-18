@@ -8,6 +8,7 @@ args = Namespace(
     experiment = 'sup', # {'sup', 'ssl'}
     task = 'classification', # {'classification', 'regression'}
     model = 'saint_s',
+    pretrained_checkpoint = None,
     # path to csv files for training either ssl or sup
     train_csv_path = '',
     train_y_csv_path = '',
@@ -15,7 +16,7 @@ args = Namespace(
     val_y_csv_path = '',
     test_csv_path = '',
     test_y_csv_path = '',
-
+    
     #parameters for the model 
     num_output = 1, # {1 for binary, > 1 for multiclass}
     num_layers = 6,
@@ -37,12 +38,17 @@ args = Namespace(
     proj_head_dim = 128,
 
     # parameters for the dataset
+    no_cat = 1,
+    no_num = 1,
+    cats = [1],
+    batch_size = 32, # [32, 256]
+    num_workers = 8,
+    
+    # parameters for preprocessing dataset
     data_folder = 'data',
     train_split = 0.65,
     validation_split = 0.15,
     test_split = 0.20,
-    batch_size = 32, # [32, 256]
-    num_workers = 8,
     num_supervised_train_data = 'all', # {'all', 50, 200, 500}
 
     # parameters for training

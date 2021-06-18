@@ -10,8 +10,6 @@ def generate_dataloader(num_supervised_train_data, experiment, seed, args):
         args.val_csv_path, args.val_y_csv_path,
         args.test_csv_path, args.test_y_csv_path,)
     
-    # Estimate the number of classes 
-    
     # create sampler
     train_weight = train_dataset.make_weights_for_balanced_classes()
     train_weight = torch.from_numpy(train_weight)

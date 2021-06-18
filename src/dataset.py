@@ -75,7 +75,8 @@ def generate_splits(dataset_size, num_supervised_train_data,
 
     return sup_train_indices, val_indices, test_indices, ssl_train_indices
 
-# custom preprocessing function for each dataset
+
+# custom preprocessing function for bank dataset
 def preprocess_bank(data, target, cls_token_idx):
     """
     preprocess: function
@@ -122,6 +123,7 @@ def preprocess_bank(data, target, cls_token_idx):
         cats.append(len(pd.unique(new_data[cat])))
 
     return new_data, labels, len(num_data.columns), len(cat_data.columns), cats
+    
     
 def generate_dataset(train_csv_path, train_y_csv_path, 
                      val_csv_path, val_y_csv_path, 

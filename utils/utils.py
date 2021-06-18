@@ -3,6 +3,9 @@ import copy
 import torch
 import torch.nn as nn
 
+import argparse
+from collections import ChainMap 
+
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
@@ -34,6 +37,7 @@ def load_pretrained_embedding(embedding, path):
     embedding.load_state_dict(pretrained_dict)
     return embedding
 
+
 class dotdict(dict):
     """dot.notation access to dictionary attributes"""
     __getattr__ = dict.get
@@ -41,30 +45,21 @@ class dotdict(dict):
     __delattr__ = dict.__delitem__
     
     
-def parse_arguments(parser):
-    parser.add_argument('--experiment',
+def parse_arguments(parser, default_args):
+    parser.add_argument('--experiment', dest='experiment',
                         help="Experiment setup to be run. Choose either 'sup' for supervised or 'ssl' \
                             for semisupervised")
-    parser.add_argument('--no_cat',
+    parser.add_argument('--no_cat', dest='no_cat', type=int, default=default_args.no_cat,
                         help="number of categorical variables in the dataset (including the cls column)")
-    parser.add_argument('--no_num',
+    parser.add_argument('--no_num', dest='no_num', type=int, default=default_args.no_num,
                         help="number of numerical variables in the dataset (including the cls column)")
-    parser.add_argument('--pretrained_checkpoint',
+    parser.add_argument('--pretrained_checkpoint', default=default_args.pretrained_checkpoint,
                         help="full path to ssl pretrained checkpoint to be finetuned")
-            
-    # parser.add_argument('--checkpoint-file',
-    #                     help="Checkpoint file .ckpt of phoneme pretrained model to use for finetuning")
-    # parser.add_argument('--freeze-feature-extractor', dest='FREEZE_FEATURE_EXTRACTOR',
-    #                     default=False, action='store_true', 
-    #                     help="Whether to freexe the backbone or update it during finetuning")
-    # parser.add_argument('--use-eng-asr', dest='USE_ENG_ASR',
-    #                     default=False, action='store_true', 
-    #                     help="Whether to use Eng-ASR as backbone during finetuning")
-    # parser.add_argument('--use-random-model', dest='USE_RANDOM_MODEL', 
-    #                     default=False, action='store_true',
-    #                     help="use a pretrained model to initialize the weights")
+    
     args = parser.parse_args()
-    return args
+    args_col = ChainMap(vars(args), vars(default_args))    
+    
+    return args_col
 
 
 
