@@ -12,7 +12,7 @@ class DatasetTabular(Dataset):
         ------------------------
         data: DataFrame
             contains the features. It's assumed that the features
-            are on the order of [numerical_features, categorical features]
+            are on the order of [cls, categorical features, numerical_features]
         y: DataFrame
             represents the target variable
         """
