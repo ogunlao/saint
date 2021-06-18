@@ -39,9 +39,9 @@ args = Namespace(
     proj_head_dim = 128,
 
     # parameters for the dataset
-    no_cat = 1,
-    no_num = 0,
-    cats = [1],
+    no_cat = 10,
+    no_num = 7,
+    cats = [1, 12, 3, 4, 2, 2, 2, 3, 12, 4],
     batch_size = 32, # [32, 256]
     num_workers = 8,
     

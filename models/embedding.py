@@ -10,16 +10,23 @@ class CategoricalEmbedding(nn.Module):
     Embedding of catogrical features using NN embedding layer.
     N embeddings will be created for N categorical feature
     """
-    def __init__(self, num_of_categories, embed_dim):
+    def __init__(self, no_cat, embed_dim, feature=None):
+        """
+        Args:
+            num_of_categories (int): number of categories for the feature
+            embed_dim (int): dimension of embedding
+            feature (str): name of categorical feature vector
+        """
         super(CategoricalEmbedding, self).__init__()
         self.embedding = nn.Embedding(
-            num_of_categories,
+            no_cat,
             embed_dim
         )
+        self.feature = feature
     
     def forward(self, x):
-                                            # x: bs 
-        return self.embedding(x)            # bs, embed_dim
+        # x: bs 
+        return self.embedding(x)        # bs, embed_dim
   
 
 class NumericalEmbedding(nn.Module):  
@@ -28,17 +35,23 @@ class NumericalEmbedding(nn.Module):
     layer of size (1 x embed_dim) and then Relu non-linearity. 
     N embeddings will be created for N numerical features
     """
-    def __init__(self, embed_dim):
+    def __init__(self, embed_dim, feature=None):
+        """
+        Args:
+            embed_dim (int): dimension of embedding
+            feature (str): name of numerical feature vector
+        """
         super(NumericalEmbedding, self).__init__()
         self.linear = nn.Sequential(
                             nn.Linear(1, embed_dim), 
                             nn.ReLU())
+        self.feature = feature
 
     def forward(self, x):
-                                            # x: bs
-        x = x.unsqueeze(1)                  # bs,1
-        return self.linear(x)               # bs, embed_dim
-    
+        # x: bs
+        # x = x.unsqueeze(1)            # bs, 1
+        return self.linear(x)           # bs, embed_dim
+
 class Embedding(nn.Module):
     """
     Do the embedding of catogrical and numerical data
@@ -48,19 +61,21 @@ class Embedding(nn.Module):
         assert no_cat == len(cats)
         
         self.embed_dim = embed_dim
+        
         self.cat_embedding = nn.ModuleList()
         for cat in cats:
             self.cat_embedding.append(
-                nn.Embedding(cat, embed_dim)
+                CategoricalEmbedding(cat, embed_dim)
             )
-        self.fc = nn.Sequential(nn.Linear(out_features=embed_dim, in_features=1),
-                                nn.ReLU()
-                                )
-        self.num_embedding = clones(self.fc, no_num)
-
+            
+        self.num_embedding = nn.ModuleList()
+        for i in range(no_num):
+            self.num_embedding.append(
+                NumericalEmbedding(embed_dim)
+            )
+            
         self.no_num = no_num
         self.no_cat = no_cat
-
         
     def forward(self, x):
         bs = x.shape[0]
@@ -73,6 +88,6 @@ class Embedding(nn.Module):
         for i, layer in enumerate(self.num_embedding):
             output.append(layer(x[:, self.no_cat+i].unsqueeze(1).float()))
 
-        data = torch.stack(output, dim=1)        # bs, n, embed_size
+        data = torch.stack(output, dim=1)   # bs, n, embed_size
         
         return data
