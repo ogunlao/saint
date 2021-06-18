@@ -37,7 +37,7 @@ to train saint model in self-supervised mode.
 
 ### Contributors
 
-- [Ahmed A. Elhag](github.com/Ahmed-A-A-Elhag)
+- [Ahmed A. Elhag](https://github.com/Ahmed-A-A-Elhag)
 - [Aisha Alaagib](https://github.com/AishaAlaagib)
 - [Amina Rufai](https://github.com/Aminah92)
 - [Amna Ahmed Elmustapha](https://github.com/AMNAALMGLY)
