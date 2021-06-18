@@ -1,6 +1,6 @@
 # SAINT: Improved Neural Networks for Tabular Data via Row Attention and Contrastive Pretraining
 
-![](saint.png)
+![saint architecture](saint.png)
 We got AUROC of 92.9% on bank dataset with initial experiments. More experiments coming soon.
 
 Major modules implemented in the code
@@ -23,8 +23,11 @@ Major modules implemented in the code
     - Calculate the number of categorical columns \(including 'cls' column\), and numerical columns. Add to config file as 'no_cat' and 'no_num'
     - Calculate the number of categories in each categorical columns, as a list. Add to config file as 'cats'. 'cls' column has 1 category
     - Sample function `preprocess_bank` can be used to preprocess bank dataset. It can be found in `src > dataset.py`
-1. Setup a new environment using `requirements.txt`
-1. Run `python main.py` with command-line arguments or with properly edited config file.
+    - Save files in train, val and test csv in `data` folder
+1. clone the repository
+1. Setup a new environment using `requirements.txt` in repo
+1. Setup configuration in `config.py` file
+1. Run `python main.py` with command-line arguments or with edited config file.
 
 > `>> python main.py --model saint_i --experiment ssl`
 

@@ -31,9 +31,11 @@ class SaintLayer(nn.Module):
     def forward(self, x):
         return self.misa(self.msa(x))
 
+
 def make_saint(num_heads, embed_dim, num_layers, d_ff, dropout):
     """
-    Make the Saint model by stacking  the Saint layer  into the encoder layer, the encoder layer is then stacked with the embedding layer in the transformer object
+    Make the Saint model by stacking  the Saint layer  into the encoder layer, \
+    the encoder layer is then stacked with the embedding layer in the transformer object
     -----------
     Parameters
     num_heads: (int) number of attention heads 
@@ -47,9 +49,10 @@ def make_saint(num_heads, embed_dim, num_layers, d_ff, dropout):
     self_attn = MultiHeadedAttention(num_heads, d_model=embed_dim)
     msa = EncoderLayer(embed_dim, self_attn, feed_forward, dropout)
 
-    self_inter_attn = MultiHeadedIntersampleAttention(num_heads, d_model=embed_dim)
+    self_inter_attn = MultiHeadedIntersampleAttention(
+        num_heads, d_model=embed_dim)
     misa = EncoderLayer(self_inter_attn, feed_forward, embed_dim, dropout)
-    
+
     layer = SaintLayer(msa, misa, size=embed_dim)
 
     encoder = Encoder(layer, num_layers)
