@@ -1,5 +1,6 @@
 # SAINT: Improved Neural Networks for Tabular Data via Row Attention and Contrastive Pretraining
 
+![](saint.png)
 We got AUROC of 92.9% on bank dataset with initial experiments. More experiments coming soon.
 
 Major modules implemented in the code
