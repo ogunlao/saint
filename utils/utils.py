@@ -39,7 +39,10 @@ def load_pretrained_embedding(embedding, path):
 
 
 class dotdict(dict):
-    """dot.notation access to dictionary attributes"""
+    """dot.notation access to dictionary attributes
+    Source: How to use a dot “.” to access members of dictionary? \
+    https://stackoverflow.com/a/23689767
+    """
     __getattr__ = dict.get
     __setattr__ = dict.__setitem__
     __delattr__ = dict.__delitem__
@@ -53,7 +56,7 @@ def parse_arguments(parser, default_args):
                         help="number of categorical variables in the dataset (including the cls column)")
     parser.add_argument('--no_num', dest='no_num', type=int, default=default_args.no_num,
                         help="number of numerical variables in the dataset (including the cls column)")
-    parser.add_argument('--pretrained_checkpoint', default=default_args.pretrained_checkpoint,
+    parser.add_argument('--pretrained_checkpoint', type=list, default=default_args.pretrained_checkpoint,
                         help="full path to ssl pretrained checkpoint to be finetuned")
     
     args = parser.parse_args()
