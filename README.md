@@ -1,8 +1,6 @@
 # SAINT: Improved Neural Networks for Tabular Data via Row Attention and Contrastive Pretraining
 
-Unofficial Implementation By Sewade Ogun, Aisha Alagib, Jamal Hussein, ...
-
-AUROC of 92.9% on bank dataset
+We got AUROC of 92.9% on bank dataset. More experiments coming soon.
 
 Major modules implemented in the code
 
@@ -28,8 +26,21 @@ Major modules implemented in the code
 1. Run `python main.py` with command-line arguments or with properly edited config file.
 
 
-### TODO:
+### TODO
 
 1. Evaluate on more datasets
 1. Optimize the embedding layer for fast retrieval of embeddings
 1. Improve documentation
+
+### Contributors
+
+- [Ahmed A. Elhag](https://sd.linkedin.com/in/ahmed-a-a-elhag-7305441a3)
+- [Aisha Alaagib](https://github.com/AishaAlaagib)
+- [Amina Rufai](https://github.com/Aminah92)
+- [Amna Ahmed Elmustapha](https://github.com/AMNAALMAGLY)
+- [Jamal Hussein](https://github.com/engmubarak48)
+- [Mohammedelfatih Salah](https://github.com/mohammedElfatihSalah)
+- [Ruba Mutasim](https://github.com/ruba128)
+- [Sewade Olaolu Ogun](https://github.com/ogunlao)
+
+(names in alphabetical order)
