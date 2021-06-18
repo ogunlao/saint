@@ -4,7 +4,48 @@ import pandas as pd
 from sklearn import preprocessing
 from torch.utils.data import Dataset, DataLoader
 
+class DatasetTabular(Dataset):
+    """Creates a tabular data set class"""
+    def __init__(self, data, y):
+        """
+        Parameters
+        ------------------------
+        data: DataFrame
+            contains the features. It's assumed that the features
+            are on the order of [numerical_features, categorical features]
+        y: DataFrame
+            represents the target variable
+        """
+        self.data = data.values  # bs x n
+        self.y = y.values        # bs x 1
 
+    def __len__(self):
+        return len(self.data)
+
+    def __getitem__(self, idx):
+        sample = self.data[idx]
+        label = self.y[idx]
+
+        return sample, label
+
+    def make_weights_for_balanced_classes(self):
+        """adopted from https://discuss.pytorch.org/t/balanced-sampling-between-classes-with-torchvision-dataloader/2703/3"""
+
+        nclasses = len(np.unique(self.y))
+        count = np.zeros(nclasses)
+        for idx in range(len(self.y)):
+            target = self.y[idx]
+            count[target] += 1
+
+        N = float(sum(count))
+        weight_per_class = N / count
+        weight = np.zeros(len(self))
+        for idx in range(len(self.y)):
+            target = self.y[idx]
+            weight[idx] = weight_per_class[target]
+        return weight
+    
+    
 def generate_splits(dataset_size, num_supervised_train_data, 
                       validation_split, test_split, 
                       random_seed, shuffle_dataset=True,):
@@ -81,61 +122,17 @@ def preprocess_bank(data, target, cls_token_idx):
         cats.append(len(pd.unique(new_data[cat])))
 
     return new_data, labels, len(num_data.columns), len(cat_data.columns), cats
-
-class DatasetTabular(Dataset):
-    '''
-    Creates tabular data set 
-
-    Attributes
-    ------------------------
-    features: bs x n , 
-    labels: bs x q, 
-    num_len :lenght of numerical columns  
-    cat_len:lenght of catogrical columns  
-    cats:list of cat_len length describes the  number of catogeries in each catogrical column 
-    '''
-    def __init__(self, data, y):
-        '''
-        Parameters
-        ------------------------
-        data: DataFrame
-            contains the features. It's assumed that the features
-            are on the order of [numerical_features, categorical features]
-        y: DataFrame
-            represents the target variable
-        '''
-        self.data = data.values  # bs x n
-        self.y = y.values        # bs x 1
-
-    def __len__(self):
-        return len(self.data)
-
-    def __getitem__(self, idx):
-        sample = self.data[idx]
-        label = self.y[idx]
-
-        return sample, label
-
-    def make_weights_for_balanced_classes(self):
-        """adopted from https://discuss.pytorch.org/t/balanced-sampling-between-classes-with-torchvision-dataloader/2703/3"""
-
-        nclasses = len(np.unique(self.y))
-        count = np.zeros(nclasses)
-        for idx in range(len(self.y)):
-            target = self.y[idx]
-            count[target] += 1
-
-        N = float(sum(count))
-        weight_per_class = N / count
-        weight = np.zeros(len(self))
-        for idx in range(len(self.y)):
-            target = self.y[idx]
-            weight[idx] = weight_per_class[target]
-        return weight
     
-def generate_dataset(train_df, train_y, 
-                     val_df, val_y, 
-                     test_df, test_y,):
+def generate_dataset(train_csv_path, train_y_csv_path, 
+                     val_csv_path, val_y_csv_path, 
+                     test_csv_path, test_y_csv_path,):
+    train_df = pd.read_csv(train_csv_path)
+    train_y = pd.read_csv(train_y_csv_path)
+    val_df = pd.read_csv(val_csv_path)
+    val_y = pd.read_csv(val_y_csv_path)
+    test_df = pd.read_csv(test_csv_path)
+    test_y = pd.read_csv(test_y_csv_path)
+    
     train_dataset = DatasetTabular(train_df, train_y)
     val_dataset = DatasetTabular(val_df, val_y)
     test_dataset = DatasetTabular(test_df, test_y)

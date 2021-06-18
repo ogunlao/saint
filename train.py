@@ -1,6 +1,9 @@
 import torch.nn as nn
+import pytorch_lightning as pl
 from pytorch_lightning import seed_everything
-from trainer import SaintSemiSupLightningModule, SaintSupLightningModule
+from pytorch_lightning.callbacks import ModelCheckpoint
+
+from src.trainer import SaintSemiSupLightningModule, SaintSupLightningModule
 from utils import load_pretrained_transformer, load_pretrained_embedding
 from src.config import args
 

@@ -2,17 +2,18 @@ import torch
 from torch.utils.data.sampler import WeightedRandomSampler
 from torch.utils.data import Dataset, DataLoader
 
-from config import args
-from dataset import DatasetTabular, generate_dataset
+from .config import args
+from .dataset import DatasetTabular, generate_dataset
 
-
-def generate_dataloader(num_supervised_train_data, experiment, seed):
-    # TODO: Get dataframes into generator
-    train_dataset, val_dataset, test_dataset = generate_dataset()
+def generate_dataloader(num_supervised_train_data, experiment, seed, args):
+    train_dataset, val_dataset, test_dataset = generate_dataset(
+        args.train_csv_path, args.train_y_csv_path,
+        args.val_csv_path, args.val_y_csv_path,
+        args.test_csv_path, args.test_y_csv_path,)
     
     # create sampler
-    train_weight = train_sup_dataset.make_weights_for_balanced_classes()
-    train_weight = torch.from_numpy(train_sup_weight)
+    train_weight = train_dataset.make_weights_for_balanced_classes()
+    train_weight = torch.from_numpy(train_weight)
     train_sampler = WeightedRandomSampler(train_weight.type('torch.DoubleTensor'), 
                                         len(train_weight),
                                         replacement=False,)

@@ -4,9 +4,17 @@ import torch
 
 
 args = Namespace(
+    # experiment parameters
     experiment = 'sup', # {'sup', 'ssl'}
     task = 'classification', # {'classification', 'regression'}
     model = 'saint_s',
+    # path to csv files for training either ssl or sup
+    train_csv_path = '',
+    train_y_csv_path = '',
+    val_csv_path = '',
+    val_y_csv_path = '',
+    test_csv_path = '',
+    test_y_csv_path = '',
 
     #parameters for the model 
     num_output = 1, # {1 for binary, > 1 for multiclass}
