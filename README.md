@@ -24,7 +24,7 @@ Major modules implemented in the code
     - Calculate the number of categories in each categorical columns, as a list. Add to config file as 'cats'. 'cls' column has 1 category
     - Sample function `preprocess_bank` can be used to preprocess bank dataset. It can be found in `src > dataset.py`
     - Save files in train, val and test csv in `data` folder
-1. clone the repository
+1. Clone the repository
 1. Setup a new environment using `requirements.txt` in repo
 1. Setup configuration in `config.py` file
 1. Run `python main.py` with command-line arguments or with edited config file.

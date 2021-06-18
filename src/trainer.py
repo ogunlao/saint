@@ -3,8 +3,6 @@ import torch.nn as nn
 from torch.optim.lr_scheduler import ReduceLROnPlateau
 
 import pytorch_lightning as pl
-from pytorch_lightning import seed_everything
-from pytorch_lightning.callbacks import ModelCheckpoint
 
 from torchmetrics import AUROC, Accuracy
 
