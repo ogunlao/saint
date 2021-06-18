@@ -10,12 +10,12 @@ from utils.utils import parse_arguments, dotdict
 def main(args):
     transformer, embedding = get_model(args.model, args)
     
-    train_loader, validation_loader, test_loader, train_ssl_loader = generate_dataloader(
+    train_loader, validation_loader, test_loader = generate_dataloader(
         args.num_supervised_train_data, args.experiment, args.seed, args)
     
     best_model_ckpt, _ = setup_experiment(transformer, embedding, 
                                             train_loader, validation_loader, test_loader,
-                                            args.experiment, args.pretrained_path, args)
+                                            args.experiment, args.pretrained_checkpoint, args)
     print(f'Path to best model found during training: \n{best_model_ckpt}')
     
 

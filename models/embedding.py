@@ -42,9 +42,9 @@ class Embedding(nn.Module):
     """
     Do the embedding of catogrical and numerical data
     """
-    def __init__(self, embed_dim, no_num, no_cats, cats):
+    def __init__(self, embed_dim, no_num, no_cat, cats):
         super(Embedding, self).__init__()
-        assert no_cats == len(cats)
+        assert no_cat == len(cats)
         
         self.embed_dim = embed_dim
         self.cat_embedding = nn.ModuleList()
@@ -58,7 +58,7 @@ class Embedding(nn.Module):
         self.num_embedding = clones(self.fc, no_num)
 
         self.no_num = no_num
-        self.no_cat = no_cats
+        self.no_cat = no_cat
 
         
     def forward(self, x):

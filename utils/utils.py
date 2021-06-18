@@ -14,6 +14,7 @@ def clones(module, N):
     return nn.ModuleList([copy.deepcopy(module) for _ in range(N)])
 
 def load_pretrained_transformer(transformer, path):
+    print('Loading pretrained transformer encoder...')
     state_dict = torch.load(path)['state_dict']
 
     pretrained_dict = {}
@@ -27,6 +28,8 @@ def load_pretrained_transformer(transformer, path):
 
 def load_pretrained_embedding(embedding, path):
     state_dict = torch.load(path)['state_dict']
+    
+    print('Loading pretrained tranformer embedding...')
 
     pretrained_dict = {}
     for name in state_dict.keys():
@@ -52,13 +55,22 @@ def parse_arguments(parser, default_args):
     parser.add_argument('--experiment', dest='experiment',
                         help="Experiment setup to be run. Choose either 'sup' for supervised or 'ssl' \
                             for semisupervised")
-    parser.add_argument('--no_cat', dest='no_cat', type=int, default=default_args.no_cat,
+    parser.add_argument('--no_cat', dest='no_cat', type=int, 
+                        default=default_args.no_cat,
                         help="number of categorical variables in the dataset (including the cls column)")
-    parser.add_argument('--no_num', dest='no_num', type=int, default=default_args.no_num,
+    parser.add_argument('--no_num', dest='no_num', type=int, 
+                        default=default_args.no_num,
                         help="number of numerical variables in the dataset (including the cls column)")
-    parser.add_argument('--pretrained_checkpoint', type=list, default=default_args.pretrained_checkpoint,
+    parser.add_argument('--cats', 
+                        default=default_args.cats, type=list,
+                        help="no. of categories of each categorical feature as a list")
+    parser.add_argument('--pretrained_checkpoint', 
+                        default=default_args.pretrained_checkpoint,
                         help="full path to ssl pretrained checkpoint to be finetuned")
-    
+    parser.add_argument('--model', default=default_args.model,
+                        help="Select saint model to initialize with", 
+                        choices=['saint', 'saint_s', 'saint_i'], 
+                        )
     args = parser.parse_args()
     args_col = ChainMap(vars(args), vars(default_args))    
     

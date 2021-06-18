@@ -1,11 +1,12 @@
 """The transformer code follows the Annotated Transformer implementation.
 See https://nlp.seas.harvard.edu/2018/04/03/attention.html"""
 
+import math
+import copy
+
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-
-import copy
 
 from models import clones
 

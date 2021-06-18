@@ -10,9 +10,13 @@ def make_saint_s(num_heads, embed_dim, num_layers, d_ff, dropout):
     and feed forward into the encoder layer
 
     -----------
-    Parameters
-    num_len: int of number of numerical features 
-    cat_lest: List of number of catogeries 
+    Paramaters
+    -----------
+    num_heads: (int) number of attention heads 
+    embed_dim: (int) size of embedding vector 
+    num_layers : (int) numbe of self attention laters
+    d_ff: (int)
+    dropout: (float) How much activations to drop
     """
 
     feed_forward = PositionwiseFeedForward(d_model=embed_dim, d_ff=d_ff)
@@ -20,7 +24,6 @@ def make_saint_s(num_heads, embed_dim, num_layers, d_ff, dropout):
     
     layer = EncoderLayer(embed_dim, self_attn, feed_forward, dropout)
     encoder = Encoder(layer, num_layers)
-    # model = Transformer(encoder)
 
     for p in encoder.parameters():
         if p.dim() > 1:

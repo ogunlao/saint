@@ -9,9 +9,9 @@ from src.config import args
 
 def setup_experiment(transformer, embedding, 
                      train_loader, validation_loader, test_loader,
-                     experiment, pretrained_path, args):
+                     experiment, pretrained_checkpoint, args):
     
-    seed_everything(args.seed, workers=True)
+    seed_everything(args.seed)
 
     if experiment == 'ssl':
         model = SaintSemiSupLightningModule(transformer, embedding,
@@ -23,10 +23,10 @@ def setup_experiment(transformer, embedding,
                                             args.cats, args.temperature,
                                             args.task,)
     elif experiment == 'sup':
-        if pretrained_path is not None:
+        if pretrained_checkpoint is not None:
             transformer = load_pretrained_transformer(
-                                            transformer, pretrained_path)
-            embedding = load_pretrained_embedding(embedding, pretrained_path)
+                                            transformer, pretrained_checkpoint)
+            embedding = load_pretrained_embedding(embedding, pretrained_checkpoint)
 
         fc = nn.Linear(args.embed_dim, args.num_output)
         model = SaintSupLightningModule(transformer, embedding,
@@ -57,7 +57,7 @@ def setup_experiment(transformer, embedding,
 
     trainer.fit(model, train_loader, validation_loader,)
 
-    if experiment == 'ssl' and test_loader is not None:
+    if experiment == 'sup' and test_loader is not None:
         trainer.test(ckpt_path='best',
                     test_dataloaders=test_loader,
                     )

@@ -14,7 +14,7 @@ def get_model(model_name, args):
     encoder = model_fn(args.num_heads, args.embed_dim, args.num_layers, 
              args.d_ff, args.dropout)
     embedding = Embedding(args.embed_dim, args.no_num, 
-                          args.no_cats, args.cats)
+                          args.no_cat, args.cats)
     
     return encoder, embedding
     

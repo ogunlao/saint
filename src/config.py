@@ -7,15 +7,16 @@ args = Namespace(
     # experiment parameters
     experiment = 'sup', # {'sup', 'ssl'}
     task = 'classification', # {'classification', 'regression'}
-    model = 'saint_s',
-    pretrained_checkpoint = None,
+    model = 'saint_i',
+    pretrained_checkpoint = '/home/ola/Projects/saint/checkpoints/lightning_logs/version_0/checkpoints/epoch=0-step=1.ckpt',
+    
     # path to csv files for training either ssl or sup
-    train_csv_path = '',
-    train_y_csv_path = '',
-    val_csv_path = '',
-    val_y_csv_path = '',
-    test_csv_path = '',
-    test_y_csv_path = '',
+    train_csv_path = '/home/ola/Projects/saint/data/train.csv',
+    train_y_csv_path = '/home/ola/Projects/saint/data/train_y.csv',
+    val_csv_path = '/home/ola/Projects/saint/data/val.csv',
+    val_y_csv_path = '/home/ola/Projects/saint/data/val_y.csv',
+    test_csv_path = '/home/ola/Projects/saint/data/test.csv',
+    test_y_csv_path = '/home/ola/Projects/saint/data/test_y.csv',
     
     #parameters for the model 
     num_output = 1, # {1 for binary, > 1 for multiclass}
@@ -39,7 +40,7 @@ args = Namespace(
 
     # parameters for the dataset
     no_cat = 1,
-    no_num = 1,
+    no_num = 0,
     cats = [1],
     batch_size = 32, # [32, 256]
     num_workers = 8,
@@ -59,7 +60,7 @@ args = Namespace(
     optim = 'adamw',
     freeze_encoder = True, # freeze transformer layer
 
-    num_epochs = 200, # default is 100
+    num_epochs = 1, # default is 100
     no_of_gpus = 4,
     seed = 1234, # 4 different seeds used
     resume_checkpoint = None,
