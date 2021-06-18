@@ -28,7 +28,7 @@ class DatasetTabular(Dataset):
 
         return sample, label
 
-    def make_weights_for_balanced_classes(self):
+    def make_weights_for_imbalanced_classes(self):
         """adopted from https://discuss.pytorch.org/t/balanced-sampling-between-classes-with-torchvision-dataloader/2703/3"""
 
         nclasses = len(np.unique(self.y))
@@ -82,7 +82,7 @@ def preprocess_bank(data, target, cls_token_idx):
     preprocess: function
         this is a function that process the features
         and return the:
-        - the processed data in the order of [numerical_features, categorical features]
+        - the processed data in the order of [cls, categorical features, numerical_features]
         - number of numerical features
         - number of categorical features
         - list of cat_len length describes the 

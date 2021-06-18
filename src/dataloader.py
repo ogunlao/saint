@@ -11,7 +11,7 @@ def generate_dataloader(num_supervised_train_data, experiment, seed, args):
         args.test_csv_path, args.test_y_csv_path,)
     
     # create sampler
-    train_weight = train_dataset.make_weights_for_balanced_classes()
+    train_weight = train_dataset.make_weights_for_imbalanced_classes()
     train_weight = torch.from_numpy(train_weight)
     train_sampler = WeightedRandomSampler(train_weight.type('torch.DoubleTensor'), 
                                         len(train_weight),
