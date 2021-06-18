@@ -24,8 +24,10 @@ Major modules implemented in the code
     - Sample function `preprocess_bank` can be used to preprocess bank dataset. It can be found in `src > dataset.py`
 
 1. Run `python main.py` with command-line arguments or with properly edited config file.
-<br/>
-e.g. `>> python main.py --model saint_i --experiment ssl` to train saint model in self-supervised mode.
+
+> `>> python main.py --model saint_i --experiment ssl` 
+
+to train saint model in self-supervised mode.
 
 
 ### TODO
