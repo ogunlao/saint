@@ -68,8 +68,8 @@ def attention(query, key, value, dropout=None):
     
     p_attn = F.softmax(scores, dim = -1)
     if dropout is not None:
-        p_attn = dropout(p_attn) #  bs , n , n
-    output = torch.matmul(p_attn, value)  # bs, n , embed_dim
+        p_attn = dropout(p_attn)            # bs , n , n
+    output = torch.matmul(p_attn, value)    # bs, n , embed_dim
     return output, p_attn
 
 
@@ -100,9 +100,7 @@ class MultiHeadedAttention(nn.Module):
         self.attn = None
         self.dropout = nn.Dropout(p=dropout)
      
-    def forward(self, query, key, value):
-        "Implements Figure 2"
-       
+    def forward(self, query, key, value):      
         nbatches = query.size(0)
         
         # 1) Do all the linear projections in batch from d_model => h x d_k 
@@ -114,8 +112,9 @@ class MultiHeadedAttention(nn.Module):
                                  dropout=self.dropout)
         
         # 3) "Concat" using a view and apply a final linear. 
-        x = x.transpose(1, 2).contiguous().view(nbatches, -1, self.h * self.d_k) # bs , n , d_model
-        return self.linears[-1](x)  # bs , n , d_model
+        x = x.transpose(1, 2).contiguous().view(
+            nbatches, -1, self.h * self.d_k)          # bs , n , d_model
+        return self.linears[-1](x)                    # bs , n , d_model
     
     
 class EncoderLayer(nn.Module):
@@ -125,7 +124,7 @@ class EncoderLayer(nn.Module):
         self.self_attn = self_attn
         self.feed_forward = feed_forward
         self.sublayer = clones(SublayerConnection(size, dropout), 2)
-        self.size = size   # d_model or embed_dim
+        self.size = size                              # d_model or embed_dim
 
     def forward(self, x):
         x = self.sublayer[0](x, lambda x: self.self_attn(x, x, x)) # bs, n , 
@@ -144,4 +143,4 @@ class Encoder(nn.Module):
         "Pass the input through each layer in turn."
         for layer in self.layers:
             x = layer(x)
-        return self.norm(x) # bs , n , d_model
+        return self.norm(x)                           # bs , n , d_model
