@@ -9,12 +9,13 @@ model_type = dict(saint = make_saint,
                 saint_s = make_saint_s
                 )
 
-def get_model(model_name, args):
+def get_model(model_name, num_heads, embed_dim, num_layers, 
+             d_ff, dropout, dropout_ff, no_num, no_cat, cats):
     model_fn = model_type[model_name]
-    encoder = model_fn(args.num_heads, args.embed_dim, args.num_layers, 
-             args.d_ff, args.dropout, args.dropout_ff)
-    embedding = Embedding(args.embed_dim, args.no_num, 
-                          args.no_cat, args.cats)
+    encoder = model_fn(num_heads, embed_dim, num_layers, 
+             d_ff, dropout, dropout_ff)
+    embedding = Embedding(embed_dim, no_num, 
+                          no_cat, cats)
     
     return encoder, embedding
     

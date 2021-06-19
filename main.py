@@ -8,7 +8,11 @@ from utils.utils import parse_arguments, dotdict
 
     
 def main(args):
-    transformer, embedding = get_model(args.model, args)
+    transformer, embedding = get_model(args.model, args.num_heads,
+                                       args.embed_dim, args.num_layers, 
+                                       args.d_ff, args.dropout, 
+                                       args.dropout_ff, args.no_num, 
+                                       args.no_cat, args.cats)
     
     train_loader, validation_loader, test_loader = generate_dataloader(
         args.num_supervised_train_data, args.experiment, args.seed, args)
