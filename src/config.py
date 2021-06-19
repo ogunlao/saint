@@ -21,8 +21,9 @@ args = Namespace(
     #parameters for the model 
     num_output = 1, # {1 for binary, > 1 for multiclass}
     num_layers = 6,
-    num_heads =  8,
+    num_heads = 8,
     dropout = 0.1,
+    dropout_ff = 0.1, # dropout for feedforward layers, 0.1 used for saint_s and 0.8 for saint and saint_i variants
     embed_dim = 32,
     d_ff = 32,
     cls_token_idx = 0,

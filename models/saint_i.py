@@ -52,7 +52,7 @@ class MultiHeadedIntersampleAttention(nn.Module):
         return self.linears[-1](x)  # bs , n , d_model
     
     
-def make_saint_i(num_heads, embed_dim, num_layers, d_ff, dropout):
+def make_saint_i(num_heads, embed_dim, num_layers, d_ff, dropout, dropout_ff=0.8):
     """
     Creates the Saint-i model by stacking  intersample attention  and 
     feed forward into the encoder layer, the encoder layer is then stacked 
@@ -65,10 +65,11 @@ def make_saint_i(num_heads, embed_dim, num_layers, d_ff, dropout):
     num_layers : (int) numbe of self attention laters
     d_ff: (int)
     dropout: (float) How much activations to drop
+    dropout_ff: (float) How much activations to drop in feedforward layers. Defaults to 0.8 
     """
 
-    feed_forward = PositionwiseFeedForward(d_model=embed_dim, d_ff=d_ff)
-    self_attn = MultiHeadedIntersampleAttention(num_heads, d_model=embed_dim)
+    feed_forward = PositionwiseFeedForward(d_model=embed_dim, d_ff=d_ff, dropout=dropout_ff)
+    self_attn = MultiHeadedIntersampleAttention(num_heads, d_model=embed_dim, dropout=dropout)
     
 
     layer = EncoderLayer(embed_dim, self_attn, feed_forward, dropout)
