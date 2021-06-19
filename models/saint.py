@@ -31,12 +31,12 @@ def make_saint(num_heads, embed_dim, num_layers, d_ff, dropout, dropout_ff=0.8):
     the encoder layer is then stacked with the embedding layer in the transformer object
     
     Args:
-    num_heads (int): number of attention heads 
-    embed_dim (int): size of embedding vector 
-    num_layers (int): numbe of self attention laters
-    d_ff (int):
-    dropout (float): How much activations to drop
-    dropout_ff (float, optional): How much activations to drop in feed forward layers. Defaults to 0.8.
+        num_heads (int): number of attention heads 
+        embed_dim (int): size of embedding vector 
+        num_layers (int): numbe of self attention laters
+        d_ff (int):
+        dropout (float): How much activations to drop
+        dropout_ff (float, optional): How much activations to drop in feed forward layers. Defaults to 0.8.
     
     Returns:
         nn.Module: transformer encoder

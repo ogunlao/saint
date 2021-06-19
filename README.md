@@ -1,6 +1,9 @@
 # SAINT: Improved Neural Networks for Tabular Data via Row Attention and Contrastive Pretraining
 
 ![saint architecture](saint.png)
+
+Paper Reference: https://arxiv.org/abs/2106.01342
+
 We got AUROC of 92.9% on bank dataset with initial experiments. More experiments coming soon.
 
 Major modules implemented in the code
@@ -15,23 +18,40 @@ Major modules implemented in the code
 
 ## How to use code
 
-1. Process dataset in the following format:
+### Process dataset in the following format:
+
     - Add cls column to dataset. 'cls' column has to be the first column as mentioned in paper
     - Apply z-transform to numerical columns
     - Label encode categorical columns
     - Concatenate cat and num columns, with cat columns coming first, then numerical ones
-    - Calculate the number of categorical columns \(including 'cls' column\), and numerical columns. Add to config file as 'no_cat' and 'no_num'
+    - Calculate the number of categorical columns (including 'cls' column), and numerical columns. Add to config file as 'no_cat' and 'no_num'
     - Calculate the number of categories in each categorical columns, as a list. Add to config file as 'cats'. 'cls' column has 1 category
     - Sample function `preprocess_bank` can be used to preprocess bank dataset. It can be found in `src > dataset.py`
     - Save files in train, val and test csv in `data` folder
-1. Clone the repository
-1. Setup a new environment using `requirements.txt` in repo
-1. Setup configuration in `config.py` file
-1. Run `python main.py` with command-line arguments or with edited config file.
 
-> `>> python main.py --model saint_i --experiment ssl`
+### Clone the repository
 
-to train saint model in self-supervised mode.
+```git
+git clone https://github.com/[username]/saint.git
+```
+
+### Setup a new environment using `requirements.txt` in repo
+
+```python
+pip3 install -r requirements.txt 
+```
+
+### Setup configuration in `config.py` file
+
+go to `src > config.py`
+
+### Run `python main.py` with command-line arguments or with edited config file
+
+e.g To train saint_i model in self-supervised mode, run;
+
+```bash
+python main.py --model saint_i --experiment ssl
+```
 
 ### TODO
 
