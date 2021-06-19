@@ -20,14 +20,14 @@ Major modules implemented in the code
 
 ### Process dataset in the following format:
 
-    - Add cls column to dataset. 'cls' column has to be the first column as mentioned in paper
-    - Apply z-transform to numerical columns
-    - Label encode categorical columns
-    - Concatenate cat and num columns, with cat columns coming first, then numerical ones
-    - Calculate the number of categorical columns (including 'cls' column), and numerical columns. Add to config file as 'no_cat' and 'no_num'
-    - Calculate the number of categories in each categorical columns, as a list. Add to config file as 'cats'. 'cls' column has 1 category
-    - Sample function `preprocess_bank` can be used to preprocess bank dataset. It can be found in `src > dataset.py`
-    - Save files in train, val and test csv in `data` folder
+- Add cls column to dataset. 'cls' column has to be the first column as mentioned in paper
+- Apply z-transform to numerical columns
+- Label encode categorical columns
+- Concatenate cat and num columns, with cat columns coming first, then numerical ones
+- Calculate the number of categorical columns (including 'cls' column), and numerical columns. Add to config file as 'no_cat' and 'no_num'
+- Calculate the number of categories in each categorical columns, as a list. Add to config file as 'cats'. 'cls' column has 1 category
+- Sample function `preprocess_bank` can be used to preprocess bank dataset. It can be found in `src > dataset.py`
+- Save files in train, val and test csv in `data` folder
 
 ### Clone the repository
 
