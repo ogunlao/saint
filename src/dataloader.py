@@ -26,7 +26,7 @@ def generate_dataloader(num_supervised_train_data, experiment, seed, args):
         
     validation_loader = DataLoader(val_dataset, batch_size=args.batch_size, 
                                 num_workers=args.num_workers,  
-                                shuffle=False,)
+                                pin_memory=pin_memory, shuffle=False,)
     
     test_loader = DataLoader(test_dataset, batch_size=args.batch_size, 
                             num_workers=args.num_workers, 

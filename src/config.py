@@ -65,7 +65,7 @@ args = Namespace(
     no_of_gpus = 4,
     seed = 1234, # 4 different seeds used
     resume_checkpoint = None,
-    monitor = 'val_loss',
+    monitor = 'val_auroc_epoch',
 )
 
 args.num_workers = multiprocessing.cpu_count()

@@ -16,8 +16,8 @@ class SaintSupLightningModule(pl.LightningModule):
         self.transformer = transformer
         self.embedding = embedding
         if freeze_encoder:
+            # use model as feature extractor
             self.transformer.eval()
-            # freeze params
             for param in self.transformer.parameters():
                 param.requires_grad = False
             self.embedding.eval()
@@ -26,10 +26,10 @@ class SaintSupLightningModule(pl.LightningModule):
 
         self.fc = fc
         self.lr = lr
-        self.optim = optim # 'adamw'
+        self.optim = optim                                      # 'adamw'
         self.weight_decay = weight_decay
         self.num_classes = None if num_output == 1 else num_output
-        self.task = task # {'classification', 'regression'}
+        self.task = task                                        
         self.cls_token_idx = cls_token_idx
         self.setup_criterion()
 
@@ -44,9 +44,8 @@ class SaintSupLightningModule(pl.LightningModule):
     def forward(self, x):
         x = self.embedding(x)
         x = self.transformer(x)
-        # cls_vec  BS x embed_dim
   
-        out = self.fc(x[:, self.cls_token_idx, :].squeeze())
+        out = self.fc(x[:, self.cls_token_idx, :].squeeze())       # BS x embed_dim
         return out
     
     def _shared_step(self, batch, auroc_fn, accuracy_fn):
@@ -55,10 +54,10 @@ class SaintSupLightningModule(pl.LightningModule):
         
         x = self.embedding(x)
         x = self.transformer(x)
-        # cls_vec  BS x embed_dim x[:, :, 0].squeeze()
-        outputs = self.fc(x[:, self.cls_token_idx, :]).squeeze()
+
+        outputs = self.fc(x[:, self.cls_token_idx, :]).squeeze()    # BS x embed_dim
         
-        loss = self.criterion(outputs, targets.squeeze().float())
+        loss = self.criterion(outputs, targets.float())
         preds = torch.sigmoid(outputs)
 
         auroc_fn.update(preds, targets)
@@ -78,7 +77,7 @@ class SaintSupLightningModule(pl.LightningModule):
         self.log(f'train_accuracy_epoch', self.train_acc.compute(), prog_bar=True,)
         self.log(f'train_auroc_epoch', self.train_auroc.compute(), prog_bar=True,)
 
-        # reset after each epoch # May not be necessary, boiler plate should do it itself
+        # reset after each epoch
         self.train_acc.reset()
         self.train_auroc.reset()
 
@@ -90,8 +89,8 @@ class SaintSupLightningModule(pl.LightningModule):
                  on_epoch=True, prog_bar=True, logger=True)
         
     def validation_epoch_end(self, validation_step_outputs):
-        self.log(f'valid_accuracy_epoch', self.valid_acc.compute(), prog_bar=True,)
-        self.log(f'valid_auroc_epoch', self.valid_auroc.compute(), prog_bar=True,)
+        self.log(f'val_accuracy_epoch', self.valid_acc.compute(), prog_bar=True,)
+        self.log(f'val_auroc_epoch', self.valid_auroc.compute(), prog_bar=True,)
 
         # reset after each epoch
         self.valid_acc.reset()
@@ -167,9 +166,8 @@ class SaintSemiSupLightningModule(pl.LightningModule):
         x = self.transformer(x)
         return x
     
-    def _shared_step(self, batch):
+    def _shared_step(self, batch, step):
         xi, _    = batch                            # xi BS x (n+1)
-        
         pi       =  self.embedding(xi)              # BS x (n+1) x d
         
         xi_prime =  self.cutmix(xi)                 # BS x (n+1)
@@ -178,27 +176,30 @@ class SaintSemiSupLightningModule(pl.LightningModule):
 
         ri       = self.transformer(pi)             # BS x (n+1) x d
         ri_prime = self.transformer(pi_prime)       # BS x (n+1) x d
+
         constrastive_loss_step = self.constrastive_loss_fn(ri, ri_prime)
         denoising_loss_step = self.denoising_loss_fn(ri_prime, xi)
-
         loss = constrastive_loss_step + self.lambda_pt * denoising_loss_step
 
+        self.log(f'{step}_contras_loss', constrastive_loss_step, on_step=True, 
+                 on_epoch=True, prog_bar=False, logger=True)
+        self.log(f'{step}_denoise_loss', denoising_loss_step, on_step=True, 
+                 on_epoch=True, prog_bar=False, logger=True)
+        # log the outputs!
+        self.log(f'{step}_loss', loss, on_step=True, 
+                 on_epoch=True, prog_bar=True, logger=True)
+        
         return loss
     
     def training_step(self, batch, batch_idx):
-        loss = self._shared_step(batch)
+        loss = self._shared_step(batch, 'train')
         
-        # log the outputs!
-        self.log('train_loss', loss, on_step=True, 
-                 on_epoch=True, prog_bar=True, logger=True)
         return {'loss': loss}
 
     def validation_step(self, batch, batch_idx):
-        val_loss = self._shared_step(batch)
-        
-        # log the outputs!
-        self.log(f'val_loss', val_loss, on_step=False, 
-                 on_epoch=True, prog_bar=True, logger=True)
+        val_loss = self._shared_step(batch, 'val')
+
+        return {'val_loss': val_loss}
 
     def configure_optimizers(self):
         if self.optim == 'adamw':
@@ -206,7 +207,7 @@ class SaintSemiSupLightningModule(pl.LightningModule):
                                         lr=self.lr,
                                         betas=(0.9, 0.999),
                                         weight_decay=self.weight_decay)
-        else: # put as dummy optim
+        else: # default optim
             optimizer = torch.optim.SGD(self.parameters(), 
                                         lr=self.lr,
                                         weight_decay=self.weight_decay)
@@ -225,6 +226,6 @@ class SaintSemiSupLightningModule(pl.LightningModule):
     def setup_criterion(self, embed_dim, proj_head_dim, no_num, no_cat, cats, temperature):
         self.constrastive_loss_fn = ConstrastiveLoss(embed_dim*(no_num+no_cat), 
                                                     proj_head_dim, 
-                                                    temperature) # check the output dimension
+                                                    temperature)
         self.denoising_loss_fn = DenoisingLoss(no_num, no_cat, 
                                             cats, embed_dim)
