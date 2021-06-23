@@ -2,13 +2,12 @@ from argparse import Namespace
 import multiprocessing
 import torch
 
-
 args = Namespace(
     # experiment parameters
     experiment = 'sup', # {'sup', 'ssl'}
     task = 'classification', # {'classification', 'regression'}
     model = 'saint',
-    pretrained_checkpoint = None, #'/home/ola/Projects/saint/checkpoints/lightning_logs/version_0/checkpoints/epoch=0-step=1.ckpt',
+    pretrained_checkpoint = None, # '/home/ola/Projects/saint/checkpoints/lightning_logs/version_0/checkpoints/epoch=0-step=1.ckpt',
     
     # path to csv files for training either ssl or sup
     train_csv_path = '/home/ola/Projects/saint/data/train.csv',
@@ -65,7 +64,8 @@ args = Namespace(
     no_of_gpus = 4,
     seed = 1234, # 4 different seeds used
     resume_checkpoint = None,
-    monitor = 'val_auroc_epoch',
+    monitor = 'val_loss', # {val_loss, val_auroc_epoch}
+    monitor_mode = 'min' # {max, min}
 )
 
 args.num_workers = multiprocessing.cpu_count()
