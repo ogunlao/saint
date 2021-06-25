@@ -94,29 +94,33 @@ def preprocess_bank(data, target, cls_token_idx):
     # adding the cls token to beginning of data
     data.insert(loc=cls_token_idx, column='cls', value='cls')
 
-    categ_cols = data.select_dtypes(include=['object', 'category']).columns
-    num_cols = [col for col in data.columns if col not in categ_cols]
+    cat_cols = data.select_dtypes(include=['object', 'category']).columns
+    num_cols = [col for col in data.columns if col not in cat_cols]
 
     # z-transform and add missing value token
     num_data = data[num_cols]
     num_data = (num_data-num_data.mean())/num_data.std()
     # num_data = (num_data-num_data.min())/(num_data.max() - num_data.min()) min-max scaling
-
+    cat_data = data[cat_cols]
+    
+    # fill missing
     num_data = num_data.fillna(-99999)
-    new_data = pd.concat([data[categ_cols], num_data], axis=1)
+    cat_data[pd.isnull(cat_data)]  = 'NaN'
+    new_data = pd.concat([cat_data, num_data], axis=1)
 
     # label encoding 
     labelencode = preprocessing.LabelEncoder()
-    cat_data = new_data[categ_cols]
     cat_data = cat_data.apply(labelencode.fit_transform)
 
-
     # cat columns come first
-    new_data = pd.concat([cat_data.astype(np.int32), new_data[num_cols].astype(np.float32)], axis=1)
+    new_data = pd.concat([cat_data.astype(np.int32), num_data.astype(np.float32)], axis=1)
 
-    labels = labelencode.fit_transform(target)
-    labels = pd.DataFrame(labels ,columns = target.columns)
-    
+    if target.dtype not in ['int32', 'int62', 'float32', 'float64', 'int']:
+        labels = labelencode.fit_transform(target)
+        labels = pd.DataFrame(labels ,columns = target.columns)
+    else:
+        labels = target
+        
     cats = []
 
     for cat in cat_data.columns:
