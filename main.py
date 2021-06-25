@@ -15,7 +15,7 @@ def main(args):
                                        args.no_cat, args.cats)
     
     train_loader, validation_loader, test_loader = generate_dataloader(
-        args.num_supervised_train_data, args.experiment, args.seed, args)
+        args.experiment, args.seed, args)
     
     best_model_ckpt, _ = setup_experiment(transformer, embedding, 
                                             train_loader, validation_loader, test_loader,

@@ -7,7 +7,7 @@ args = Namespace(
     experiment = 'sup', # {'sup', 'ssl'}
     task = 'classification', # {'classification', 'regression'}
     model = 'saint',
-    pretrained_checkpoint = None, # '/home/ola/Projects/saint/checkpoints/lightning_logs/version_0/checkpoints/epoch=0-step=1.ckpt',
+    pretrained_checkpoint = '/home/ola/Projects/saint/checkpoints/lightning_logs/version_7/checkpoints/epoch=0-step=1.ckpt',
     
     # path to csv files for training either ssl or sup
     train_csv_path = '/home/ola/Projects/saint/data/train.csv',
@@ -58,7 +58,7 @@ args = Namespace(
     learning_rate = 0.0001,
     weight_decay = 0.01,
     optim = 'adamw',
-    freeze_encoder = True, # freeze transformer layer
+    freeze_encoder = False, # freeze transformer layer
 
     num_epochs = 1, # default is 100
     no_of_gpus = 4,

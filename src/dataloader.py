@@ -4,7 +4,7 @@ from torch.utils.data import Dataset, DataLoader
 
 from .dataset import DatasetTabular, generate_dataset
 
-def generate_dataloader(num_supervised_train_data, experiment, seed, args):
+def generate_dataloader(experiment, seed, args):
     train_dataset, val_dataset, test_dataset = generate_dataset(
         args.train_csv_path, args.train_y_csv_path,
         args.val_csv_path, args.val_y_csv_path,
