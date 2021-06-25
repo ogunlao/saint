@@ -106,7 +106,6 @@ def preprocess_bank(data, target, cls_token_idx):
     # fill missing
     num_data = num_data.fillna(-99999)
     cat_data[pd.isnull(cat_data)]  = 'NaN'
-    new_data = pd.concat([cat_data, num_data], axis=1)
 
     # label encoding 
     labelencode = preprocessing.LabelEncoder()
