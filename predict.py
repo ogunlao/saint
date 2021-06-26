@@ -26,8 +26,8 @@ def main(args):
                                        args.dropout_ff, args.no_num, 
                                        args.no_cat, args.cats)
     
-    test_df = pd.read_csv(args.test_csv_path)
-    test_df = test_df[['job']]
+    test_df = pd.read_csv(args.submit_csv_path)
+    test_df = test_df[['ID']]
     test_df['target'] = -1
     
     _, _, test_loader = generate_dataloader(
@@ -59,9 +59,9 @@ def main(args):
     assert len(preds) == len(test_df)
     test_df['target'] = preds
     
-    test_df.to_csv('prediction.csv')
+    test_df.to_csv(args.pred_sav_path, index=False)
     
-    print(f'Prediction finished')
+    print(f'Prediction finished,  csv save at {args.pred_sav_path}')
     
 
 if __name__ == "__main__":
