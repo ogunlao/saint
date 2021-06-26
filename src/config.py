@@ -19,7 +19,7 @@ args = Namespace(
     
     # parameters for predicting on test set
     submit_csv_path = '/home/ola/Projects/saint/data/test.csv', # path to submission path for external prediction
-    pred_sav_path = 'prediction.csv',
+    pred_sav_path = 'data/prediction.csv',
     
     #parameters for the model 
     num_output = 1, # {1 for binary, > 1 for multiclass}

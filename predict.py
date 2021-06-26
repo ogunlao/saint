@@ -46,6 +46,8 @@ def main(args):
     
     model = SaintSupLightningModule(**conf_dict)
     model.load_from_checkpoint(args.pretrained_checkpoint, **conf_dict)
+    model.eval()
+    model.freeze()
     
     preds = []
     for x, _ in test_loader:
