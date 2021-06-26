@@ -20,6 +20,10 @@ import copy
 
     
 def main(args):
+    if args.pretrained_checkpoint is None:
+        print('Pretrained checkpoint path missing in config')
+        return
+    
     transformer, embedding = get_model(args.model, args.num_heads,
                                        args.embed_dim, args.num_layers, 
                                        args.d_ff, args.dropout, 
