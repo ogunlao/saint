@@ -26,6 +26,10 @@ def main(args):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     args = parse_arguments(parser, default_args)
+    
+    # allow passing string as list for "cats" argument
+    if not isinstance(args.cats, list):
+        args.cats = [int(x) for x in args.cats.split()]
     args = dotdict(args)
     
     main(args)
