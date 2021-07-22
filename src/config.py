@@ -45,7 +45,7 @@ args = Namespace(
     # parameters for the dataset
     no_cat = 10,
     no_num = 7,
-    cats = [1, 12, 3, 4, 2, 2, 2, 3, 12, 4],
+    cats = "1, 12, 3, 4, 2, 2, 2, 3, 12, 4", # pass either as a list or as a string of int
     batch_size = 32, # [32, 256]
     num_workers = 8,
     

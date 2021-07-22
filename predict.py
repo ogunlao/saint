@@ -67,7 +67,7 @@ def main(args):
     
     test_df.to_csv(args.pred_sav_path, index=False)
     
-    print(f'Prediction finished,  csv save at {args.pred_sav_path}')
+    print(f'Prediction finished,  csv saved at {args.pred_sav_path}')
     
 
 if __name__ == "__main__":

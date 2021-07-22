@@ -29,7 +29,7 @@ if __name__ == "__main__":
     
     # allow passing string as list for "cats" argument
     if not isinstance(args.cats, list):
-        args.cats = [int(x) for x in args.cats.split()]
+        args.cats = [int(x.strip()) for x in args.cats.split(",")]
     args = dotdict(args)
     
     main(args)
