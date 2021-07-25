@@ -8,4 +8,4 @@ tensorboard-plugin-wit==1.8.0
 torch==1.8.1
 torchmetrics==0.3.2
 torchtext==0.6.0
-torchvision==0.4.2
+torchvision
