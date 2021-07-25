@@ -130,16 +130,20 @@ def preprocess_bank(data, target, cls_token_idx):
     
 def generate_dataset(train_csv_path, train_y_csv_path, 
                      val_csv_path, val_y_csv_path, 
-                     test_csv_path, test_y_csv_path,):
+                     test_csv_path=None, test_y_csv_path=None,):
     train_df = pd.read_csv(train_csv_path)
     train_y = pd.read_csv(train_y_csv_path)
     val_df = pd.read_csv(val_csv_path)
     val_y = pd.read_csv(val_y_csv_path)
-    test_df = pd.read_csv(test_csv_path)
-    test_y = pd.read_csv(test_y_csv_path)
+    
+    test_dataset = None
+    if test_csv_path is not None:
+        test_df = pd.read_csv(test_csv_path)
+        test_y = pd.read_csv(test_y_csv_path)
+        test_dataset = DatasetTabular(test_df, test_y)
     
     train_dataset = DatasetTabular(train_df, train_y)
     val_dataset = DatasetTabular(val_df, val_y)
-    test_dataset = DatasetTabular(test_df, test_y)
+    
 
     return train_dataset, val_dataset, test_dataset

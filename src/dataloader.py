@@ -28,8 +28,10 @@ def generate_dataloader(experiment, seed, args):
                                 num_workers=args.num_workers,  
                                 pin_memory=pin_memory, shuffle=False,)
     
-    test_loader = DataLoader(test_dataset, batch_size=args.batch_size, 
-                            num_workers=args.num_workers, 
-                            pin_memory=pin_memory, shuffle=False,)
+    test_loader = None
+    if test_dataset is not None:
+        test_loader = DataLoader(test_dataset, batch_size=args.batch_size, 
+                                num_workers=args.num_workers, 
+                                pin_memory=pin_memory, shuffle=False,)
     
     return train_loader, validation_loader, test_loader
