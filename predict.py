@@ -20,6 +20,8 @@ import copy
 
     
 def main(args):
+    """function to make automatic predition from held-out dataset for example in kaggle test set"""
+    
     if args.pretrained_checkpoint is None:
         print('Pretrained checkpoint path missing in config')
         return
@@ -31,6 +33,8 @@ def main(args):
                                        args.no_cat, args.cats)
     
     test_df = pd.read_csv(args.submit_csv_path)
+    
+    # Change 'ID' to sample unique identifier
     test_df = test_df[['ID']]
     test_df['target'] = -1
     
