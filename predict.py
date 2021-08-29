@@ -15,7 +15,6 @@ from pytorch_lightning.callbacks import ModelCheckpoint
 import pandas as pd
 
 from src.trainer import SaintSemiSupLightningModule, SaintSupLightningModule
-from src.config import args
 import copy
 
     
@@ -82,6 +81,11 @@ def main(args):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
+    
+    # allow passing string as list for "cats" argument
+    if not isinstance(default_args.cats, list):
+        default_args.cats = [int(x.strip()) for x in default_args.cats.split(",")]
+    
     args = parse_arguments(parser, default_args)
     args = dotdict(args)
     
