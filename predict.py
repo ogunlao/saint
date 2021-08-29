@@ -58,13 +58,19 @@ def main(args):
     model.freeze()
     
     preds = []
-    for x, _ in test_loader:
-        output = model(x)
-        pred = torch.sigmoid(output)
-        pred = (pred > 0.5).long()
-        preds.append(pred)
-    preds = torch.cat(preds, dim=0).squeeze()
-    preds = preds.numpy()
+    
+    with torch.no_grad():
+        for x, _ in test_loader:
+            output = model(x)
+            if args.num_output == 1 or args.num_output == None:
+                pred = torch.sigmoid(output)
+                pred = (pred > 0.5).long()
+            else:
+                pred = nn.functional.softmax(output, dim=1)
+                pred = torch.argmax(pred, dim=1)
+            preds.append(pred)
+        preds = torch.cat(preds, dim=0).squeeze()
+        preds = preds.numpy()
     
     assert len(preds) == len(test_df)
     test_df['target'] = preds

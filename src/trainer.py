@@ -58,7 +58,12 @@ class SaintSupLightningModule(pl.LightningModule):
         outputs = self.fc(x[:, self.cls_token_idx, :]).squeeze()    # BS x embed_dim
         
         loss = self.criterion(outputs, targets.float())
-        preds = torch.sigmoid(outputs)
+        
+        with torch.no_grad():
+            if self.num_classes is None:
+                preds = torch.sigmoid(outputs)
+            else:
+                preds = nn.functional.softmax(outputs, dim=1)
 
         auroc_fn.update(preds, targets)
         accuracy_fn.update(preds, targets)

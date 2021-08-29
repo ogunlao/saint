@@ -7,18 +7,18 @@ args = Namespace(
     experiment = 'sup', # {'sup', 'ssl'}
     task = 'classification', # {'classification', 'regression'}
     model = 'saint',
-    pretrained_checkpoint = None, #'./saint/checkpoints/lightning_logs/version_7/checkpoints/epoch=0-step=1.ckpt',
+    pretrained_checkpoint = None, #'checkpoints/lightning_logs/version_7/checkpoints/epoch=0-step=1.ckpt',
     
     # path to csv files for training either ssl or sup
-    train_csv_path = './saint/data/train.csv',
-    train_y_csv_path = './saint/data/train_y.csv',
-    val_csv_path = './saint/data/val.csv',
-    val_y_csv_path = './saint/data/val_y.csv',
-    test_csv_path = './saint/data/test.csv', # None
-    test_y_csv_path = './saint/data/test_y.csv', # None
+    train_csv_path = 'data/train.csv',
+    train_y_csv_path = 'data/train_y.csv',
+    val_csv_path = 'data/val.csv',
+    val_y_csv_path = 'data/val_y.csv',
+    test_csv_path = 'data/test.csv', # None
+    test_y_csv_path = 'data/test_y.csv', # None
     
     # parameters for predicting on test set
-    submit_csv_path = './saint/data/test.csv', # path to submission path for external prediction
+    submit_csv_path = 'data/test.csv', # path to submission path for external prediction
     pred_sav_path = 'data/prediction.csv',
     
     #parameters for the model 
