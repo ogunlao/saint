@@ -57,7 +57,10 @@ class SaintSupLightningModule(pl.LightningModule):
 
         outputs = self.fc(x[:, self.cls_token_idx, :]).squeeze()    # BS x embed_dim
         
-        loss = self.criterion(outputs, targets.float())
+        # To cater for binary/multiclass training
+        targets = targets.float() if self.num_classes is None else targets
+        
+        loss = self.criterion(outputs, targets)
         
         with torch.no_grad():
             if self.num_classes is None:
