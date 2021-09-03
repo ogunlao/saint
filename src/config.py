@@ -21,8 +21,8 @@ args = Namespace(
     submit_csv_path = 'data/test.csv', # path to submission path for external prediction
     pred_sav_path = 'data/prediction.csv',
     
-    #parameters for the model 
-    num_output = 1, # {1 for binary, > 1 for multiclass}
+    # parameters for the model 
+    num_output = 1, # no of output neurons: 1 for binary classification, num of classes in target for multiclass}
     num_layers = 6,
     num_heads = 8,
     dropout = 0.1,

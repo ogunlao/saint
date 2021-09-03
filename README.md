@@ -6,6 +6,8 @@ Paper Reference: https://arxiv.org/abs/2106.01342
 
 We got AUROC of 92.9% on bank dataset with initial experiments. More experiments coming soon.
 
+The code currently work for binary and multiclass classification tasks. Regression not supported at the moment.
+
 Major modules implemented in the code
 
 - Saint Transformer
@@ -32,7 +34,7 @@ Major modules implemented in the code
 ### Clone the repository
 
 ```git
-git clone https://github.com/[username]/saint.git
+git clone https://github.com/ogunlao/saint.git
 ```
 
 ### Setup a new environment using `requirements.txt` in repo
