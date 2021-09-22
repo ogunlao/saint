@@ -1,5 +1,6 @@
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 from .utils import clones
 
 class ConstrastiveLoss(nn.Module):
@@ -19,7 +20,7 @@ class ConstrastiveLoss(nn.Module):
 
     def contrastive_loss(self, zi, zi_prime):
                                                             # zi dim = BS x proj_head_dim = zi_prime dim
-        
+        eps = 1e-7
         zi_product = torch.mm(zi, torch.t(zi_prime))        # BS x BS
         zi_product = zi_product/self.temperature
 
@@ -27,12 +28,15 @@ class ConstrastiveLoss(nn.Module):
         exp_zi_prod_sum = torch.sum(exp_zi_prod, dim=-1, 
                                keepdim=True)                # BS x 1
 
-        
+        # Add relu to remove negative values (in-case) before applying log,
+        diag_relu = F.relu(torch.diag(
+                                    exp_zi_prod / exp_zi_prod_sum
+                                ))
 
         return -1.0 * torch.sum(torch.log(
-                                torch.diag(
+                                F.relu(torch.diag(
                                     exp_zi_prod / exp_zi_prod_sum
-                                )))                         # scalar
+                                )) + eps))                  # scalar
 
     def forward(self, ri, ri_prime):
                                                             # ri dim = # BS x (n+1) x d = ri_prime dim
