@@ -28,11 +28,6 @@ class ConstrastiveLoss(nn.Module):
         exp_zi_prod_sum = torch.sum(exp_zi_prod, dim=-1, 
                                keepdim=True)                # BS x 1
 
-        # Add relu to remove negative values (in-case) before applying log,
-        diag_relu = F.relu(torch.diag(
-                                    exp_zi_prod / exp_zi_prod_sum
-                                ))
-
         return -1.0 * torch.sum(torch.log(
                                 F.relu(torch.diag(
                                     exp_zi_prod / exp_zi_prod_sum
