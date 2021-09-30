@@ -19,7 +19,7 @@ import copy
 
     
 def main(args):
-    """function to make automatic predition from held-out dataset for example in kaggle test set"""
+    """function to make automatic prediction from held-out dataset for example in kaggle test set"""
     
     if args.pretrained_checkpoint is None:
         print('Pretrained checkpoint path missing in config')
@@ -61,7 +61,7 @@ def main(args):
     with torch.no_grad():
         for x, _ in test_loader:
             output = model(x)
-            if args.num_output == 1 or args.num_output == None:
+            if args.num_output == 1 or args.num_output is None:
                 pred = torch.sigmoid(output)
                 pred = (pred > 0.5).long()
             else:

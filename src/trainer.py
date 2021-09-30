@@ -7,7 +7,7 @@ import pytorch_lightning as pl
 from torchmetrics import AUROC, Accuracy
 
 from utils.augment import CutMix, Mixup
-from utils.loss import ConstrastiveLoss, DenoisingLoss
+from utils.loss import ContrastiveLoss, DenoisingLoss
 
 class SaintSupLightningModule(pl.LightningModule):
     def __init__(self, transformer, embedding, fc, optim, lr,
@@ -178,18 +178,18 @@ class SaintSemiSupLightningModule(pl.LightningModule):
         xi, _    = batch                            # xi BS x (n+1)
         pi       =  self.embedding(xi)              # BS x (n+1) x d
         
-        xi_prime =  self.cutmix(xi)                 # BS x (n+1)
+        xi_prime = self.cutmix(xi)                 # BS x (n+1)
         xi_prime_embed = self.embedding(xi_prime)   # BS x d x (n+1)
         pi_prime = self.mixup(xi_prime_embed)       # BS x (n+1) x d
 
         ri       = self.transformer(pi)             # BS x (n+1) x d
         ri_prime = self.transformer(pi_prime)       # BS x (n+1) x d
 
-        constrastive_loss_step = self.constrastive_loss_fn(ri, ri_prime)
+        contrastive_loss_step = self.contrastive_loss_fn(ri, ri_prime)
         denoising_loss_step = self.denoising_loss_fn(ri_prime, xi)
-        loss = constrastive_loss_step + self.lambda_pt * denoising_loss_step
+        loss = contrastive_loss_step + self.lambda_pt * denoising_loss_step
 
-        self.log(f'{step}_contras_loss', constrastive_loss_step, on_step=True, 
+        self.log(f'{step}_contras_loss', contrastive_loss_step, on_step=True,
                  on_epoch=True, prog_bar=False, logger=True)
         self.log(f'{step}_denoise_loss', denoising_loss_step, on_step=True, 
                  on_epoch=True, prog_bar=False, logger=True)
@@ -232,7 +232,7 @@ class SaintSemiSupLightningModule(pl.LightningModule):
             }
 
     def setup_criterion(self, embed_dim, proj_head_dim, no_num, no_cat, cats, temperature):
-        self.constrastive_loss_fn = ConstrastiveLoss(embed_dim*(no_num+no_cat), 
+        self.contrastive_loss_fn = ContrastiveLoss(embed_dim*(no_num+no_cat),
                                                     proj_head_dim, 
                                                     temperature)
         self.denoising_loss_fn = DenoisingLoss(no_num, no_cat, 

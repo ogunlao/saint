@@ -8,6 +8,7 @@ from .transformer import EncoderLayer, Encoder
 
 from .saint_i import MultiHeadedIntersampleAttention
 
+
 class SaintLayer(nn.Module):
     """Saint layer stacks the self attention and the intersample attention together"""
     def __init__(self, msa, misa, size):
