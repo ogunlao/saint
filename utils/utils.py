@@ -38,6 +38,10 @@ class dotdict(dict):
     
     
 def parse_arguments(parser, default_args):
+    # perform conversion for "cats" argument
+    if not isinstance(default_args.cats, list):
+        default_args.cats = [int(x.strip()) for x in default_args.cats.split(",")]
+        
     parser.add_argument('--experiment', dest='experiment', 
                         default=default_args.experiment, type=str,
                         help="Experiment setup to be run. Choose either 'sup' for supervised or 'ssl' \
