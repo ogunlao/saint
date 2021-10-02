@@ -38,14 +38,6 @@ class SaintSupLightningModule(pl.LightningModule):
         self.train_metric = Metric(self.num_classes).get_metric(self.metric)
         self.valid_metric = Metric(self.num_classes).get_metric(self.metric)
         self.test_metric = Metric(self.num_classes).get_metric(self.metric)
-        
-        # self.train_auroc = AUROC(num_classes=self.num_classes,)
-        # self.valid_auroc = AUROC(num_classes=self.num_classes,)
-        # self.test_auroc = AUROC(num_classes=self.num_classes,)
-
-        # self.train_acc = Accuracy(num_classes=self.num_classes)
-        # self.valid_acc = Accuracy(num_classes=self.num_classes)
-        # self.test_acc = Accuracy(num_classes=self.num_classes)
 
     def forward(self, x):
         x = self.embedding(x)
