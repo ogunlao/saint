@@ -81,6 +81,10 @@ def parse_arguments(parser, default_args):
                         help="Select saint model to initialize", 
                         choices=['saint', 'saint_s', 'saint_i'], 
                         )
+    parser.add_argument('--metric', default=default_args.metric, type=str,
+                        help="Select metric to report after training", 
+                        choices=['acc', 'auroc'], 
+                        )
     args = parser.parse_args()
     args_col = ChainMap(vars(args), vars(default_args))    
     

@@ -63,7 +63,7 @@ args = Namespace(
     weight_decay = 0.01,
     optim = 'adamw',
     freeze_encoder = False, # freeze transformer layer
-    metric='acc', # {auroc, acc} train, dev and test metric
+    metric='auroc', # {auroc, acc} train, dev and test metric
 
     num_epochs = 1, # default is 100
     no_of_gpus = 4,
