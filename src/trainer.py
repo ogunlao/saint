@@ -4,14 +4,15 @@ from torch.optim.lr_scheduler import ReduceLROnPlateau
 
 import pytorch_lightning as pl
 
-from torchmetrics import AUROC, Accuracy
-
 from utils.augment import CutMix, Mixup
 from utils.loss import ContrastiveLoss, DenoisingLoss
+from utils.utils import Metric
 
 class SaintSupLightningModule(pl.LightningModule):
     def __init__(self, transformer, embedding, fc, optim, lr,
-                 weight_decay, task, num_output, cls_token_idx, freeze_encoder=False):
+                 weight_decay, task, num_output, cls_token_idx, 
+                 freeze_encoder=False, metric='auroc',
+                 ):
         super().__init__()
         self.transformer = transformer
         self.embedding = embedding
@@ -31,15 +32,20 @@ class SaintSupLightningModule(pl.LightningModule):
         self.num_classes = None if num_output == 1 else num_output
         self.task = task                                        
         self.cls_token_idx = cls_token_idx
+        self.metric=metric
         self.setup_criterion()
 
-        self.train_auroc = AUROC(num_classes=self.num_classes,)
-        self.valid_auroc = AUROC(num_classes=self.num_classes,)
-        self.test_auroc = AUROC(num_classes=self.num_classes,)
+        self.train_metric = Metric(self.num_classes).get_metric(self.metric)
+        self.valid_metric = Metric(self.num_classes).get_metric(self.metric)
+        self.test_metric = Metric(self.num_classes).get_metric(self.metric)
+        
+        # self.train_auroc = AUROC(num_classes=self.num_classes,)
+        # self.valid_auroc = AUROC(num_classes=self.num_classes,)
+        # self.test_auroc = AUROC(num_classes=self.num_classes,)
 
-        self.train_acc = Accuracy(num_classes=self.num_classes)
-        self.valid_acc = Accuracy(num_classes=self.num_classes)
-        self.test_acc = Accuracy(num_classes=self.num_classes)
+        # self.train_acc = Accuracy(num_classes=self.num_classes)
+        # self.valid_acc = Accuracy(num_classes=self.num_classes)
+        # self.test_acc = Accuracy(num_classes=self.num_classes)
 
     def forward(self, x):
         x = self.embedding(x)
@@ -48,7 +54,7 @@ class SaintSupLightningModule(pl.LightningModule):
         out = self.fc(x[:, self.cls_token_idx, :].squeeze())       # BS x embed_dim
         return out
     
-    def _shared_step(self, batch, auroc_fn, accuracy_fn):
+    def _shared_step(self, batch, metric_fn):
         x, targets = batch
         targets = targets.squeeze()
         
@@ -68,13 +74,12 @@ class SaintSupLightningModule(pl.LightningModule):
             else:
                 preds = nn.functional.softmax(outputs, dim=1)
 
-        auroc_fn.update(preds, targets.long())
-        accuracy_fn.update(preds, targets.long())
+        metric_fn.update(preds, targets.long())
         
         return loss
     
     def training_step(self, batch, batch_idx):
-        loss = self._shared_step(batch, self.train_auroc, self.train_acc)
+        loss = self._shared_step(batch, self.train_metric)
         
         # log the outputs!
         self.log('train_loss', loss, on_step=True, 
@@ -82,38 +87,33 @@ class SaintSupLightningModule(pl.LightningModule):
         return {'loss': loss}
 
     def training_epoch_end(self, training_step_outputs):
-        self.log(f'train_accuracy_epoch', self.train_acc.compute(), prog_bar=True,)
-        self.log(f'train_auroc_epoch', self.train_auroc.compute(), prog_bar=True,)
+        self.log(f'train_{self.metric}_epoch', self.train_metric.compute(), prog_bar=True,)
 
         # reset after each epoch
-        self.train_acc.reset()
-        self.train_auroc.reset()
+        self.train_metric.reset()
 
     def validation_step(self, batch, batch_idx):
-        val_loss = self._shared_step(batch, self.valid_auroc, self.valid_acc)
+        val_loss = self._shared_step(batch, self.valid_metric)
         
         # log the outputs!
         self.log(f'val_loss', val_loss, on_step=False, 
                  on_epoch=True, prog_bar=True, logger=True)
         
     def validation_epoch_end(self, validation_step_outputs):
-        self.log(f'val_accuracy_epoch', self.valid_acc.compute(), prog_bar=True,)
-        self.log(f'val_auroc_epoch', self.valid_auroc.compute(), prog_bar=True,)
+        self.log(f'val_{self.metric}_epoch', self.valid_metric.compute(), prog_bar=True,)
 
         # reset after each epoch
-        self.valid_acc.reset()
-        self.valid_auroc.reset()
+        self.valid_metric.reset()
 
     def test_step(self, batch, batch_idx):
-        test_loss = self._shared_step(batch, self.test_auroc, self.test_acc)
+        test_loss = self._shared_step(batch, self.test_metric)
         
         # log the outputs!
         self.log('test_loss', test_loss, on_step=False, 
                  on_epoch=True, prog_bar=True, logger=True)
     
     def test_epoch_end(self, test_outs):
-        self.log(f'test_accuracy_best_epoch', self.test_acc.compute())
-        self.log(f'test_auroc_best_epoch', self.test_auroc.compute())
+        self.log(f'test_{self.metric}_best_epoch', self.test_metric.compute())
 
     def configure_optimizers(self):
         if self.optim == 'adamw':

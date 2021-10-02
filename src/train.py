@@ -30,7 +30,9 @@ def setup_experiment(transformer, embedding,
                                         args.weight_decay,
                                         args.task, args.num_output,
                                         args.cls_token_idx,
-                                        args.freeze_encoder)
+                                        args.freeze_encoder,
+                                        args.metric,
+                                        )
         
         if pretrained_checkpoint is not None:
             print(f'Initializing sup task using pretrained model:\n{pretrained_checkpoint}')
