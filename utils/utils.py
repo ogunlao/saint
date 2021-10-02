@@ -27,7 +27,7 @@ def load_pretrained_model(model, path, model_name='transformer'):
     return model
 
 class Metric:
-    "Class dispatcher; Adapted from https://stackoverflow.com/a/58923974"
+    "Metrics dispatcher. Adapted from answer at https://stackoverflow.com/a/58923974"
     def __init__(self, num_classes):
         self.num_classes=num_classes
 
