@@ -1,5 +1,5 @@
 import hydra
-from omegaconf import DictConfig, OmegaConf
+from omegaconf import DictConfig
 
 import numpy as np
 import torch
@@ -9,7 +9,6 @@ import pandas as pd
 
 from models.model_generator import get_model
 from src.dataset import DatasetTabular
-from src.dataloader import generate_dataloader
 from src.trainer import SaintSupLightningModule
 
 

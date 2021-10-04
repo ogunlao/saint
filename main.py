@@ -1,6 +1,6 @@
 import os
 import hydra
-from omegaconf import DictConfig, OmegaConf
+from omegaconf import DictConfig
 from pytorch_lightning import seed_everything
 
 from models.model_generator import get_model

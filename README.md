@@ -4,7 +4,9 @@
 
 Paper Reference: https://arxiv.org/abs/2106.01342
 
-We got AUROC of 92.9% on bank dataset with initial experiments. More experiments coming soon.
+> NB: This implementation uses [Pytorch-lightning](https://pytorch-lightning.readthedocs.io/en/latest/) and [Hydra](https://hydra.cc/) for configuration. For an earlier release of this repo, check the branch, [saint-orig](https://github.com/ogunlao/saint/tree/saint-orig)
+
+We got AUROC of 92.9% on bank dataset with initial experiments. More can be done in terms of hyperparameter sweep.
 
 The code currently work for binary and multiclass classification tasks. Regression not supported at the moment.
 
@@ -20,7 +22,7 @@ Major modules implemented in the code
 
 ## How to use code
 
-### Process dataset in the following format:
+### Process your dataset in the following format:
 
 - Add cls column to dataset. 'cls' column has to be the first column as mentioned in paper
 - Apply z-transform to numerical columns
@@ -43,23 +45,39 @@ git clone https://github.com/ogunlao/saint.git
 pip3 install -r requirements.txt 
 ```
 
-### Setup configuration in `config.py` file
+### Setup configuration in `configs` directory
 
-go to `src > config.py`
+The base config can be found at `configs > config.yaml`. Other configs related to the data and experiment can also be found in the `configs` dir
 
 ### Run `python main.py` with command-line arguments or with edited config file
 
-e.g To train saint_i model in self-supervised mode, run;
+Examples
+
+1. To train saint_i model in self-supervised mode using bank dataset, run;
 
 ```bash
-python main.py --model saint_i --experiment ssl
+python main.py experiment=self-supervised \
+experiment.model=saint_i data=bank_ssl
 ```
 
-### TODO
+2. To train saint model in supervised mode using bank dataset, run;
 
-1. Evaluate on more datasets
-1. Optimize the embedding layer for fast retrieval of embeddings
-1. Improve documentation
+```bash
+python main.py \
+experiment=supervised \
+experiment.model=saint \
+data=bank_sup
+```
+
+3. To make prediction using saint_s model in supervised mode using bank dataset, run;
+
+```bash
+python predict.py experiment=predict \
+experiment.model=saint_s data=bank_sup \
+experiment.pretrained_checkpoint=["PATH_TO_CKPT"]
+```
+
+Data Prerocessing can be done in a similar manner for other classification dataset
 
 ### Contributors
 
