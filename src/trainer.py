@@ -11,7 +11,7 @@ from utils.utils import Metric
 class SaintSupLightningModule(pl.LightningModule):
     def __init__(self, transformer, embedding, fc, optim, lr,
                  weight_decay, task, num_output, cls_token_idx, 
-                 freeze_encoder=False, metric='auroc',
+                 freeze_encoder=False, metric='auroc', **kwargs
                  ):
         super().__init__()
         self.transformer = transformer
@@ -144,7 +144,7 @@ class SaintSemiSupLightningModule(pl.LightningModule):
                  weight_decay, prob_cutmix, alpha, 
                  lambda_pt, embed_dim, proj_head_dim, 
                  no_num, no_cat, cats, temperature,
-                 task):
+                 task, **kwargs):
         super().__init__()
         self.transformer = transformer
         self.embedding = embedding

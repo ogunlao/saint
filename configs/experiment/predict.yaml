@@ -1,0 +1,3 @@
+# parameters for predicting on test set
+submit_csv_pat: data/test.csv # path to submission path for external prediction
+pred_sav_path: data/prediction.csv

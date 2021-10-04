@@ -1,0 +1,58 @@
+defaults:
+  - experiment: supervised # supervised, self-supervised
+  - data: bank_sup
+
+seed: 1234
+transformer:
+  num_layers: 6
+  num_heads: 8
+  dropout: 0.1
+  dropout_ff: 0.1 # 0.1 for saint_s and 0.8 for saint and saint_i variants
+  embed_dim: 32
+  d_ff: 32
+  cls_token_idx: 0
+
+augmentation:
+  prob_cutmix: 0.3 # cutmix
+  alpha: 0.2 # [0.1 0.4] # mixup
+  lambda_pt: 10
+
+optimizer:
+  # parameter for contrastive loss
+  temperature: 0.7
+  proj_head_dim: 128
+
+  # parameters for training
+  beta_1: 0.9
+  beta_2: 0.99
+  lr: 0.0001
+  weight_decay: 0.01
+  optim: adamw
+  metric: auroc # {auroc acc} train dev and test metric
+
+preproc:
+  # parameters for preprocessing dataset
+  data_folder: data
+  train_split: 0.65
+  validation_split: 0.15
+  test_split: 0.20
+  num_supervised_train_data: all # {all 50 200 500}
+
+callback:
+  monitor: val_loss # {val_loss, val_auroc_epoch}
+  mode: min # {max, min}
+
+trainer:
+  max_epochs: 1 # default is 100
+  gpus: 0
+  deterministic: true
+  default_root_dir: null
+  resume_from_checkpoint: null
+
+dataloader:
+  shuffle_val: false
+  train_bs: 32  # [32 256]
+  val_bs: 32
+  num_workers: 8
+
+metric: ${optimizer.metric}

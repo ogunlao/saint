@@ -1,0 +1,7 @@
+# @package _group_
+experiment: self-supervised
+task: classification # {classification, regression}
+model: saint
+num_output: null # no of output neurons: 1 for binary classification num of classes in target for multiclass}
+freeze_encoder: false # freeze transformer layer
+pretrained_checkpoint: null #checkpoints/lightning_logs/version_7/checkpoints/epoch=0-step=1.ckpt

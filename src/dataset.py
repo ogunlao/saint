@@ -1,8 +1,10 @@
+from pathlib import Path
+
 import numpy as np
 import pandas as pd
 
 from sklearn import preprocessing
-from torch.utils.data import Dataset, DataLoader
+from torch.utils.data import Dataset
 
 class DatasetTabular(Dataset):
     """Creates a tabular data set class"""
@@ -10,14 +12,14 @@ class DatasetTabular(Dataset):
         """
         Parameters
         ------------------------
-        data: DataFrame
+        data: np.array
             contains the features. It's assumed that the features
             are on the order of [cls, categorical features, numerical_features]
-        y: DataFrame
+        y: np.array
             represents the target variable
         """
-        self.data = data.values  # bs x n
-        self.y = y.values        # bs x 1
+        self.data = data  # bs x n
+        self.y = y        # bs x 1
 
     def __len__(self):
         return len(self.data)
@@ -128,22 +130,34 @@ def preprocess_bank(data, target, cls_token_idx):
     return new_data, labels, len(num_data.columns), len(cat_data.columns), cats
     
     
-def generate_dataset(train_csv_path, train_y_csv_path, 
-                     val_csv_path, val_y_csv_path, 
-                     test_csv_path=None, test_y_csv_path=None,):
-    train_df = pd.read_csv(train_csv_path)
-    train_y = pd.read_csv(train_y_csv_path)
-    val_df = pd.read_csv(val_csv_path)
-    val_y = pd.read_csv(val_y_csv_path)
+def generate_dataset(train_csv_path, val_csv_path, 
+                     test_csv_path=None, train_y_csv_path=None, 
+                     val_y_csv_path=None, test_y_csv_path=None,):
+    
+    train_df = pd.read_csv(Path(train_csv_path))
+    val_df = pd.read_csv(Path(val_csv_path))
+    
+    if train_y_csv_path is not None:
+        train_y = pd.read_csv(Path(train_y_csv_path)).values
+    else: 
+        train_y = np.array([-1]*len(train_df)) 
+    
+    if val_y_csv_path is not None:
+        val_y = pd.read_csv(Path(val_y_csv_path)).values
+    else: 
+        val_y = np.array([-1]*len(train_df))
     
     test_dataset = None
     if test_csv_path is not None:
-        test_df = pd.read_csv(test_csv_path)
-        test_y = pd.read_csv(test_y_csv_path)
-        test_dataset = DatasetTabular(test_df, test_y)
+        test_df = pd.read_csv(Path(test_csv_path))
+        
+        if test_y_csv_path is not None:
+            test_y = pd.read_csv(Path(test_y_csv_path)).values
+        else: 
+            test_y = np.array([-1]*len(test_df))
+        test_dataset = DatasetTabular(test_df.values, test_y)
     
-    train_dataset = DatasetTabular(train_df, train_y)
-    val_dataset = DatasetTabular(val_df, val_y)
-    
+    train_dataset = DatasetTabular(train_df.values, train_y)
+    val_dataset = DatasetTabular(val_df.values, val_y)
 
     return train_dataset, val_dataset, test_dataset

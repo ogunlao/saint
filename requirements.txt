@@ -9,3 +9,4 @@ torch==1.8.1
 torchmetrics==0.3.2
 torchtext==0.6.0
 torchvision
+hydra==1.0.4
