@@ -53,6 +53,9 @@ dataloader:
   shuffle_val: false
   train_bs: 32  # [32 256]
   val_bs: 32
+  test_bs: ${dataloader.val_bs}
   num_workers: 8
+  pin_memory: false
 
 metric: ${optimizer.metric}
+print_config: false

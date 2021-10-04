@@ -18,8 +18,8 @@ class DatasetTabular(Dataset):
         y: np.array
             represents the target variable
         """
-        self.data = data  # bs x n
-        self.y = y        # bs x 1
+        self.data = data.copy()  # bs x n
+        self.y = y.copy()        # bs x 1
 
     def __len__(self):
         return len(self.data)

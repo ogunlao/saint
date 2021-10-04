@@ -10,8 +10,8 @@ from src.dataloader import generate_dataloader
 
 @hydra.main(config_path="configs", config_name="config")
 def main(args: DictConfig) -> None:
-    
-    print(OmegaConf.to_yaml(args))
+    if args.print_config is True:
+        print(args)
     seed_everything(args.seed)
     
     transformer, embedding = get_model(args.experiment.model, 

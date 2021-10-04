@@ -3,7 +3,6 @@ import pytorch_lightning as pl
 from pytorch_lightning.callbacks import ModelCheckpoint
 
 from src.trainer import SaintSemiSupLightningModule, SaintSupLightningModule
-from src.config import args
 import copy
 
 def setup_experiment(model_dict: dict, 
