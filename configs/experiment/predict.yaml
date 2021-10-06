@@ -1,11 +1,11 @@
 # parameters for predicting on test set
-pred_sav_path: /home/ola/Projects/saint/data/prediction.csv
+pred_sav_path: ?? # path to save prediction e.g ""./prediction.csv"
 save_prediction: true
 id_col: index
 target_col: target 
 
 experiment:
   model: saint
-  pretrained_checkpoint: /home/ola/Projects/saint/outputs/2021-10-04/18-36-21/lightning_logs/version_0/checkpoints/epoch=0-step=1.ckpt #nulll
+  pretrained_checkpoint: ?? #nulll
   num_output: 1
   task: classification
