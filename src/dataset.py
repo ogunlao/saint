@@ -80,8 +80,8 @@ def generate_splits(dataset_size, num_supervised_train_data,
     return sup_train_indices, val_indices, test_indices, ssl_train_indices
 
  
-def preprocess_bank(data, target, cls_token_idx=0):
-    """preprocess bank data set and compute the statistics of the data
+def preprocess(data, target, cls_token_idx=0):
+    """preprocess csv data set and compute the statistics of the data
 
     Args:
         data (pd.Dataframe): Dataframe of tabular data
