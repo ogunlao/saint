@@ -26,7 +26,7 @@ For easy configuration, we decided to organize the code in a structured way
 
 1. The base config file can be found the the `configs` directory. This contains most hyperparameters for training the models.
 1. Configurations for experiments are split into `supervised` and `self-supervised` configs. The supervised config file is to be used as default when running predictive tasks while the self-supervised config file should be selected in case of self-supervised pre-training tasks. The files can be edited to suit your needs. In addition, there is a `predict` config file which we setup to make predictions on a test set (e.g. for kaggle)
-1. Another config directory is dedicated to house all datasets configurations. This is the `data` sub-directory inside the configs directory It includes hyperparameters like train, validation and test data paths and other data statistics. Samples of configs for supervised (indicated with names ending in sup) and self-supervised training (indicated with names ending in sup) are provided for [bank]() dataset. They can be replicated for other custom datasets as well.
+1. Another config directory is dedicated to house all datasets configurations. This is the `data` sub-directory inside the configs directory It includes hyperparameters like train, validation and test data paths and other data statistics. Samples of configs for supervised (indicated with names ending in sup) and self-supervised training (indicated with names ending in sup) are provided for [bank](https://archive.ics.uci.edu/ml/machine-learning-databases/00222/bank.zip) dataset. They can be replicated for other custom datasets as well.
 
 ### Dataset
 
@@ -57,9 +57,9 @@ git clone https://github.com/ogunlao/saint.git
 1. Activate your virtual environment. It is advisable to use a virtual environment to setup this code.
 2. Install dependencies using the `requirements.txt` file provided
 
-    ```python
-    pip3 install -r requirements.txt 
-    ```
+```python
+pip3 install -r requirements.txt 
+```
 
 3. Update the config.yaml file with your hyperparameters. Alternatively, you can provide your settings on the command-line while running experiments. A good knowledge of hydra might be required.
 
@@ -87,7 +87,7 @@ experiment.model=saint_s data=bank_sup \
 experiment.pretrained_checkpoint=["PATH_TO_SAVED_CKPT"]
 ```
 
-> You may need to run some hyperparameter search to determine the best model for your task. Hydra provides this functionality out of the box with `multirun`.
+> You may need to run some hyperparameter search to determine the best model for your task. Hydra provides this functionality out of the box with [multirun](https://hydra.cc/docs/tutorials/basic/running_your_app/multi-run).
 
 ## Contributors
 
