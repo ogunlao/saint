@@ -28,10 +28,9 @@ optimizer:
   lr: 0.0001
   weight_decay: 0.01
   optim: adamw
-  metric: auroc # {auroc acc} train dev and test metric
+  metric: auroc # {auroc, acc}
 
 preproc:
-  # parameters for preprocessing dataset
   data_folder: data
   train_split: 0.65
   validation_split: 0.15
@@ -43,7 +42,7 @@ callback:
   mode: min # {max, min}
 
 trainer:
-  max_epochs: 1 # default is 100
+  max_epochs: 100 # default is 100
   gpus: 0
   deterministic: true
   default_root_dir: null

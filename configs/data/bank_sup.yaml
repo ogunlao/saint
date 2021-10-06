@@ -1,13 +1,12 @@
 data_paths:
-  train_csv_path: /home/ola/Projects/saint/data/train.csv
-  train_y_csv_path: /home/ola/Projects/saint/data/train_y.csv
-  val_csv_path: /home/ola/Projects/saint/data/val.csv
-  val_y_csv_path: /home/ola/Projects/saint/data/val_y.csv
-  test_csv_path: /home/ola/Projects/saint/data/test.csv
-  test_y_csv_path: /home/ola/Projects/saint/data/test_y.csv
+  train_csv_path: data/train_ssl.csv
+  train_y_csv_path: data/train_y.csv
+  val_csv_path: data/val.csv
+  val_y_csv_path: data/val_y.csv
+  test_csv_path: data/test.csv
+  test_y_csv_path: data/test_y.csv
 
 data_stats:
-  # parameters for the dataset
   no_cat: 10
   no_num: 7
   cats: [1, 12, 3, 4, 2, 2, 2, 3, 12, 4]
