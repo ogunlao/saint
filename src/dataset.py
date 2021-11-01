@@ -110,10 +110,10 @@ def preprocess(data, target, cls_token_idx=0):
     num_cols = [col for col in data.columns if col not in cat_cols]
 
     # z-transform
-    num_data = data[num_cols]
+    num_data = data[num_cols].copy()
     num_data = (num_data-num_data.mean())/num_data.std()
 
-    cat_data = data[cat_cols]
+    cat_data = data[cat_cols].copy()
     
     # fill missing
     num_data = num_data.fillna(-99999)
@@ -126,7 +126,7 @@ def preprocess(data, target, cls_token_idx=0):
     # Note that categorical columns come first
     new_data = pd.concat([cat_data.astype(np.int32), num_data.astype(np.float32)], axis=1)
 
-    if target.dtype not in ['int32', 'int62', 'float32', 'float64', 'int']:
+    if target.values.dtype not in ['int32', 'int64', 'float32', 'float64', 'int']:
         labels = labelencode.fit_transform(target)
         labels = pd.DataFrame(labels, columns=target.columns)
     else:

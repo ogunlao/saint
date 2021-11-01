@@ -1,0 +1,3 @@
+- experiment=self-supervised
+- experiment.model=saint_i
+- data=bank_ssl

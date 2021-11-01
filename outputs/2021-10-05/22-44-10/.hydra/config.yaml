@@ -1,0 +1,74 @@
+seed: 1234
+transformer:
+  num_layers: 6
+  num_heads: 8
+  dropout: 0.1
+  dropout_ff: 0.1
+  embed_dim: 32
+  d_ff: 32
+  cls_token_idx: 0
+augmentation:
+  prob_cutmix: 0.3
+  alpha: 0.2
+  lambda_pt: 10
+optimizer:
+  temperature: 0.7
+  proj_head_dim: 128
+  beta_1: 0.9
+  beta_2: 0.99
+  lr: 0.0001
+  weight_decay: 0.01
+  optim: adamw
+  metric: auroc
+preproc:
+  data_folder: data
+  train_split: 0.65
+  validation_split: 0.15
+  test_split: 0.2
+  num_supervised_train_data: all
+callback:
+  monitor: val_loss
+  mode: min
+trainer:
+  max_epochs: 100
+  gpus: 0
+  deterministic: true
+  default_root_dir: null
+  resume_from_checkpoint: null
+dataloader:
+  shuffle_val: false
+  train_bs: 32
+  val_bs: 32
+  test_bs: ${dataloader.val_bs}
+  num_workers: 8
+  pin_memory: false
+metric: ${optimizer.metric}
+print_config: false
+experiment:
+  experiment: self-supervised
+  task: classification
+  model: saint
+  num_output: null
+  freeze_encoder: false
+  pretrained_checkpoint: null
+data_paths:
+  train_csv_path: /home/ola/Projects/saint/data/train_ssl.csv
+  train_y_csv_path: null
+  val_csv_path: /home/ola/Projects/saint/data/val.csv
+  val_y_csv_path: null
+  test_csv_path: null
+  test_y_csv_path: null
+data_stats:
+  no_cat: 10
+  no_num: 7
+  cats:
+  - 1
+  - 12
+  - 3
+  - 4
+  - 2
+  - 2
+  - 2
+  - 3
+  - 12
+  - 4

@@ -1,4 +1,3 @@
-# @package _group_
 experiment: supervised
 task: classification # {classification, regression}
 model: saint
