@@ -42,7 +42,7 @@ The datasets should live in the `data` directory. It is necessary to provide the
 - Also, you will need to provide the number of categories in each categorical column in the data config. These are required to build proper embeddings for the model. It should also be provided as an array in the `data.data_stats.cats` parameter or hard coded in the data config. Note that the cls column has 1 category and is always indicated as 1 in the array.
 - Save your processed files as train, val and test csvs in `data` folder. 
 
-> A sample function named `preprocess.py` is included under `src > dataset.py` that explains the preprocessing strategy. You may need to modify this function depending on the dataset. Also, tutorial notebooks are provided in `notebooks` folder to showcase how to preprocess custom datasets and run experiments
+> A sample function named `preprocess.py` is included under `src > dataset.py` that explains the preprocessing strategy. You may need to modify this function depending on the dataset. Also, tutorial notebooks are provided in `notebooks` folder to showcase how to preprocess custom datasets and run experiments. Look at [Bank_Dataset.ipynb](notebooks/Bank_Dataset.ipynb), other notebooks are custom notebooks and may show tutorial for a previous version.
 
 ## How to it setup
 
