@@ -1,6 +1,5 @@
 import torch
 
-device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 class CutMix:
     """Applies cutmix in the feature space to the features"""
@@ -15,7 +14,9 @@ class CutMix:
         x_a = x_i[shuffled_index]                                       # BS x (n+1)
 
         prob_matrix = torch.ones(x_i.shape) * (1 - self.prob_cutmix)    # BS x (n+1)
-        m_binary_matrix = torch.bernoulli(prob_matrix).to(device)       # BS x (n+1)
+        
+        m_binary_matrix = torch.empty_like(x_i)
+        torch.bernoulli(prob_matrix, out=m_binary_matrix)               # BS x (n+1)
         
         xi_cutmix = m_binary_matrix * x_i + (1 - m_binary_matrix) * x_a # BS x (n+1)
         
