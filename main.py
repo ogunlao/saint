@@ -16,10 +16,10 @@ def main(args: DictConfig) -> None:
     
     transformer, embedding = get_model(args.experiment.model, 
                                        **args.transformer, 
-                                       **args.data_stats,)
+                                       **args.data.data_stats,)
     
     train_loader, validation_loader, test_loader = generate_dataloader(
-        data_paths=args.data_paths, **args.dataloader, )
+        data_paths=args.data.data_paths, **args.dataloader, )
     
     model_dict = dict(transformer=transformer, 
                       embedding=embedding)
