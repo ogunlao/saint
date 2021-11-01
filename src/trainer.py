@@ -152,7 +152,7 @@ class SaintSemiSupLightningModule(pl.LightningModule):
         self.alpha = alpha
         self.lambda_pt = lambda_pt
         self.cats = cats
-        self.cutmix = CutMix(self.prob_cutmix, self.device)
+        self.cutmix = CutMix(self.prob_cutmix)
         self.mixup  = Mixup(self.alpha)
         
         self.lr = lr

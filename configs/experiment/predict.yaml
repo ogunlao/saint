@@ -1,11 +1,11 @@
+model: saint
+task: classification
+pretrained_checkpoint: ?? #nulll
+num_output: 1
+
 # parameters for predicting on test set
 pred_sav_path: ?? # path to save prediction e.g ""./prediction.csv"
 save_prediction: true
 id_col: index
 target_col: target 
 
-experiment:
-  model: saint
-  pretrained_checkpoint: ?? #nulll
-  num_output: 1
-  task: classification

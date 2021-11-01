@@ -32,11 +32,11 @@ optimizer:
   metric: auroc # {auroc, acc}
 
 preproc:
-  data_folder: data
+  data_folder: null
   train_split: 0.65
   validation_split: 0.15
   test_split: 0.20
-  num_supervised_train_data: all # {all 50 200 500}
+  num_supervised_train_data: null # {all 50 200 500}
 
 callback:
   monitor: val_loss # {val_loss, val_auroc_epoch}

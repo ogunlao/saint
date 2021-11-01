@@ -70,7 +70,7 @@ Examples
 1. To train saint-intersample (saint-i) model in self-supervised mode using bank dataset, run;
 
 ```bash
-python main.py experiment.experiment=self-supervised \
+python main.py experiment=self-supervised \
     experiment.model=saint_i \
     data=bank_ssl \
     data.data_folder=/content/saint/data
@@ -79,7 +79,7 @@ python main.py experiment.experiment=self-supervised \
 2. To train saint model in supervised mode using bank dataset, run;
 
 ```bash
-python main.py experiment.experiment=supervised \
+python main.py experiment=supervised \
     experiment.model=saint \
     data=bank_sup \
     data.data_folder=/content/saint/data
@@ -88,10 +88,10 @@ python main.py experiment.experiment=supervised \
 3. To make prediction using saint model in supervised mode using bank dataset, run;
 
 ```bash
-!python saint/predict.py experiment.experiment=predict \
+!python saint/predict.py experiment=predict \
     experiment.model=saint \
     experiment.pretrained_checkpoint=["PATH_TO_SAVED_CKPT"] \
-    experiment.pred_sav_path=/content/predict.csv \
+    experiment.pred_sav_path=["PATH_TO_SAVE_PREDICTION.csv"] \
     data=bank_sup \
     data.data_folder=/content/saint/data
 ```
