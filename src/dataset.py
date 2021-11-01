@@ -49,8 +49,8 @@ class DatasetTabular(Dataset):
     
     
 def generate_splits(dataset_size, num_supervised_train_data, 
-                      validation_split, test_split, 
-                      random_seed, shuffle_dataset=True,):
+                      validation_split, test_split=0.0, 
+                      random_seed=1234, shuffle_dataset=True,):
     """Split dataset indices into train, val, and test 
     for supervised and self-supervised training
     """
@@ -66,7 +66,9 @@ def generate_splits(dataset_size, num_supervised_train_data,
         np.random.shuffle(indices)
 
     # should not change for all operations
-    test_indices = indices[:split_test] 
+    test_split = []
+    if test_split:
+        test_indices = indices[:split_test] 
     val_indices = indices[split_test : split_test+split_val]
     
     if num_supervised_train_data == 'all':
