@@ -70,21 +70,30 @@ Examples
 1. To train saint-intersample (saint-i) model in self-supervised mode using bank dataset, run;
 
 ```bash
-python main.py experiment=self-supervised experiment.model=saint_i data=bank_ssl
+python main.py experiment.experiment=self-supervised \
+    experiment.model=saint_i \
+    data=bank_ssl \
+    data.data_folder=/content/saint/data
 ```
 
 2. To train saint model in supervised mode using bank dataset, run;
 
 ```bash
-python main.py experiment=supervised experiment.model=saint data=bank_sup
+python main.py experiment.experiment=supervised \
+    experiment.model=saint \
+    data=bank_sup \
+    data.data_folder=/content/saint/data
 ```
 
-3. To make prediction using saint_s model in supervised mode using bank dataset, run;
+3. To make prediction using saint model in supervised mode using bank dataset, run;
 
 ```bash
-python predict.py experiment=predict \
-experiment.model=saint_s data=bank_sup \
-experiment.pretrained_checkpoint=["PATH_TO_SAVED_CKPT"]
+!python saint/predict.py experiment.experiment=predict \
+    experiment.model=saint \
+    experiment.pretrained_checkpoint=["PATH_TO_SAVED_CKPT"] \
+    experiment.pred_sav_path=/content/predict.csv \
+    data=bank_sup \
+    data.data_folder=/content/saint/data
 ```
 
 > You may need to run some hyperparameter search to determine the best model for your task. Hydra provides this functionality out of the box with [multirun](https://hydra.cc/docs/tutorials/basic/running_your_app/multi-run).

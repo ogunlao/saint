@@ -16,20 +16,20 @@ from src.trainer import SaintSupLightningModule
 def main(args: DictConfig) -> None:
     """function to make automatic prediction from held-out dataset for example in kaggle test set"""
     
-    if args.print_config is True:
-        print(args)
+    # if args.print_config is True:
+    print(args)
     
     if args.experiment.pretrained_checkpoint is None:
         raise ValueError('Pretrained checkpoint path missing in config')
     
     transformer, embedding = get_model(args.experiment.model, 
                                        **args.transformer, 
-                                       **args.data_stats,)
+                                       **args.data.data_stats,)
     
-    if args.data_paths.test_csv_path is None:
+    if args.data.data_paths.test_csv_path is None:
         raise ValueError('Test csv path is not provided in config')
     
-    test_df = pd.read_csv(args.data_paths.test_csv_path)
+    test_df = pd.read_csv(args.data.data_paths.test_csv_path)
     test_y = np.array([-1]*len(test_df))
     test_dataset = DatasetTabular(test_df.values, test_y)
     test_loader = DataLoader(test_dataset, batch_size=args.dataloader.test_bs, 
@@ -40,17 +40,17 @@ def main(args: DictConfig) -> None:
     model_dict = dict(transformer=transformer, 
                       embedding=embedding, fc=fc)
     params = dict(**model_dict, **args.optimizer, **args.augmentation, 
-                       **args.transformer, **args.data_stats, **args.experiment,)
+                       **args.transformer, **args.data.data_stats, **args.experiment,)
     
     model = SaintSupLightningModule(**params)
     model.load_from_checkpoint(args.experiment.pretrained_checkpoint, **params)
     model.eval()
     model.freeze()
     
-    if args.save_prediction:
+    if args.experiment.save_prediction:
         test_df = test_df.reset_index()
-        test_df = test_df[[args.id_col]]
-        test_df[args.target_col] = -1
+        test_df = test_df[[args.experiment.id_col]]
+        test_df[args.experiment.target_col] = -1
         
         preds = []
         
@@ -68,14 +68,14 @@ def main(args: DictConfig) -> None:
             preds = preds.numpy()
         
         assert len(preds) == len(test_df)
-        test_df[args.target_col] = preds
+        test_df[args.experiment.target_col] = preds
         
-        test_df.to_csv(args.pred_sav_path, index=False)
+        test_df.to_csv(args.experiment.pred_sav_path, index=False)
     
     else:
         raise NotImplementedError('Could not make prediction. "save_prediction" set to false')
     
-    print(f'Prediction finished,  csv saved at {args.pred_sav_path}')
+    print(f'Prediction finished,  csv saved at {args.experiment.pred_sav_path}')
     
 
 if __name__ == "__main__":    

@@ -41,6 +41,7 @@ preproc:
 callback:
   monitor: val_loss # {val_loss, val_auroc_epoch}
   mode: min # {max, min}
+  auto_insert_metric_name: false
 
 trainer:
   max_epochs: 100 # default is 100
