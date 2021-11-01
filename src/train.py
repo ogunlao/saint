@@ -22,7 +22,7 @@ def setup_experiment(model_dict: dict,
     model_dict['fc'] = fc
     
     params = dict(**model_dict, **args.optimizer, **args.augmentation, 
-                       **args.transformer, **args.data_stats, **args.experiment,)
+                       **args.transformer, **args.data.data_stats, **args.experiment,)
     
     model = model_init(**params)
     

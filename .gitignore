@@ -1,8 +1,0 @@
-__pycache__
-*.pyc
-.vscode
-checkpoints/
-outputs/
-.ipynb_checkpoints
-.idea
-
