@@ -1,13 +1,13 @@
 import torch
 
-device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 class CutMix:
     """Applies cutmix in the feature space to the features"""
 
-    def __init__(self, prob_cutmix):
+    def __init__(self, prob_cutmix, device):
         super(CutMix, self).__init__()
         self.prob_cutmix = prob_cutmix
+        self.device = device
 
     def __call__(self, x_i):                                            # x_i # BS x (n+1)
 
@@ -15,7 +15,7 @@ class CutMix:
         x_a = x_i[shuffled_index]                                       # BS x (n+1)
 
         prob_matrix = torch.ones(x_i.shape) * (1 - self.prob_cutmix)    # BS x (n+1)
-        m_binary_matrix = torch.bernoulli(prob_matrix).to(device)       # BS x (n+1)
+        m_binary_matrix = torch.bernoulli(prob_matrix).to(self.device)       # BS x (n+1)
         
         xi_cutmix = m_binary_matrix * x_i + (1 - m_binary_matrix) * x_a # BS x (n+1)
         
