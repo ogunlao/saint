@@ -66,7 +66,7 @@ def generate_splits(dataset_size, num_supervised_train_data,
         np.random.shuffle(indices)
 
     # should not change for all operations
-    test_split = []
+    test_indices = []
     if test_split:
         test_indices = indices[:split_test] 
     val_indices = indices[split_test : split_test+split_val]
