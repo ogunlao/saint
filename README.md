@@ -26,7 +26,7 @@ For easy configuration, we decided to organize the code in a structured way
 
 1. The base config file can be found the the `configs` directory. This contains most hyperparameters for training the models.
 1. Configurations for experiments are split into `supervised` and `self-supervised` configs. The supervised config file is to be used as default when running predictive tasks while the self-supervised config file should be selected in case of self-supervised pre-training tasks. The files can be edited to suit your needs. In addition, there is a `predict` config file which we setup to make predictions on a test set (e.g. for kaggle)
-1. Another config directory is dedicated to house all datasets configurations. This is the `data` sub-directory inside the configs directory It includes hyperparameters like train, validation and test data paths and other data statistics. Samples of configs for supervised (indicated with names ending in sup) and self-supervised training (indicated with names ending in sup) are provided for [bank](https://archive.ics.uci.edu/ml/machine-learning-databases/00222/bank.zip) dataset. They can be replicated for other custom datasets as well.
+1. Another config directory is dedicated to house all datasets configurations. This is the `data` sub-directory inside the configs directory. It includes hyperparameters like train, validation and test data paths and other data statistics. Samples of configs for supervised (indicated with names ending in "_sup") and self-supervised training (indicated with names ending in "_ssl") are provided for [bank](https://archive.ics.uci.edu/ml/machine-learning-databases/00222/bank.zip) dataset. They can be replicated for other custom datasets as well.
 
 ### Dataset
 
