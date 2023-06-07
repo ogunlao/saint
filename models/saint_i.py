@@ -6,52 +6,36 @@ import torch.nn as nn
 from .transformer import attention, clones
 from .transformer import PositionwiseFeedForward, EncoderLayer, Encoder
 
-def intersample(query , key , value,dropout=None):
-    "Calculate the intersample of a given query batch" 
-    #x , bs , n , d 
-    b, h, n , d = query.shape
-    #print(query.shape,key.shape, value.shape )
-    query , key , value = query.reshape(1, b, h, n*d), \
-                            key.reshape(1, b, h, n*d), \
-                                value.reshape(1, b, h, n*d)
-
-    output, _ = attention(query, key ,value)  #1 , b, n*d
-    output = output.squeeze(0) #b, n*d
-    output = output.reshape(b, h, n, d) #b,n,d
-
-    return output
-
 class MultiHeadedIntersampleAttention(nn.Module):
-    def __init__(self, h, d_model, dropout=0.1):
-        "Take in model size and number of heads."
-        super(MultiHeadedIntersampleAttention, self).__init__()
-        assert d_model % h == 0
-        # We assume d_v always equals d_k
-     
-        self.d_k = d_model // h
-        self.h = h
-        self.linears = clones(nn.Linear(d_model, d_model), 4)
-        self.attn = None
-        self.dropout = nn.Dropout(p=dropout)
-     
-    def forward(self, query, key, value):
-        "Implements Figure 2"
-       
-        nbatches = query.size(0)
-        
-        # 1) Do all the linear projections in batch from d_model => h x d_k 
-        query, key, value = [l(x).view(nbatches, -1, self.h, self.d_k).transpose(1, 2)
-             for l, x in zip(self.linears, (query, key, value))]
-        
-        # 2) Apply attention on all the projected vectors in batch. 
-        x = intersample(query, key, value, 
-                                 dropout=self.dropout)
-        
-        # 3) "Concat" using a view and apply a final linear. 
-        x = x.transpose(1, 2).contiguous().view(nbatches, -1, self.h * self.d_k) # bs , n , d_model
-        return self.linears[-1](x)  # bs , n , d_model
+    '''
+     Wrapper class for MHA which calculate attention over samples rather than features
+    '''
     
-    
+    def __init__(self, *args, **kwargs):
+        '''
+         Arguments are passed to MHA class
+        '''
+        
+        # initalise MHA attention layer
+        super().__init__(*args, **kwargs)
+     
+        
+    # Overwite forward method to transpose
+    def forward(self, query, key, value, **kwargs):
+        '''
+         Requires query, key, value vectors of size batcn x d_model, transpoes and calucaltes attention across samples, transposes back and returns
+         kwargs are passed directly to nn.MultiheadAttention
+        '''
+        
+        # transpose q, k, v to shape d_model x batch
+        query = query.transpose(0,1)
+        key = key.transpose(0,1)
+        value = value.transpose(0,1)
+        
+        output, attn_output_weights = super().forward(query, key, value, **kwargs)  # call forward function for MHA
+        
+        return output.transpose(0,1)  # return 
+
 def make_saint_i(num_heads, embed_dim, num_layers, d_ff, dropout, dropout_ff=0.8):
     """
     Creates the Saint-i model by stacking  intersample attention  and 
