@@ -44,7 +44,7 @@ The datasets should live in the `data` directory. It is necessary to provide the
 
 > A sample function named `preprocess.py` is included under `src > dataset.py` that explains the preprocessing strategy. You may need to modify this function depending on the dataset. Also, tutorial notebooks are provided in `notebooks` folder to showcase how to preprocess custom datasets and run experiments. Look at [Bank_Dataset.ipynb](notebooks/Bank_Dataset.ipynb)
 
-## How to it setup
+## How to set it up
 
 ### Clone the repository
 
